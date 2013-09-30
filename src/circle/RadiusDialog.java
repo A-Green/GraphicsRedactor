@@ -107,12 +107,17 @@ public class RadiusDialog extends JPanel {
 	{
 		ok = false;
 		
+		//Обнаружение фрейма-владельца
+		
 		Frame owner = null;
 		
 		if(parent instanceof Frame)
 			owner = (Frame) parent;
 		else
 			owner = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent);
+		
+		//При  первом обращении или при изменении фрейма-владельца
+		//создается новое диалоговое окно
 		
 		if(dialog == null || dialog.getOwner() != owner)
 		{
