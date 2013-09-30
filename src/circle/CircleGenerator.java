@@ -42,7 +42,7 @@ public class CircleGenerator {
 		result.add(new Point(x + dx,dy - y));
 		}
 		
-		while(y >= limit)
+		while(y > limit)
 		{
 			if (delta > 0)							// диагональная точка лежит вне окружности. нужно выбрать между вертикальным и диагональным пикселем
 			{
