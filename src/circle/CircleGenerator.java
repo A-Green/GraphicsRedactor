@@ -35,10 +35,13 @@ public class CircleGenerator {
 		int x = 0;
 		int y = R;
 		double delta = 2 - 2 * R;       //первоначальное значение ошибки
+		int gridSize = g.getSize();
 		
 		if (R > 0)
 		{
+			if (checkBounds(x + dx, dy + y , gridSize))
 		result.add(new Point(x + dx,dy + y));
+			if (checkBounds(x + dx, dy - y , gridSize))
 		result.add(new Point(x + dx,dy - y));
 		}
 		
@@ -84,13 +87,25 @@ public class CircleGenerator {
 				}
 			}
 			
-			result.add(new Point(dx + x,dy + y)); // смещаем точки относительно центра
-			result.add(new Point(dx + x,dy - y));
-			result.add(new Point(dx - x,dy + y));
-			result.add(new Point(dx - x,dy - y));
+			if (checkBounds(x + dx, dy + y , gridSize))
+				result.add(new Point(dx + x,dy + y)); // смещаем точки относительно центра			
+			if (checkBounds(x + dx, dy - y , gridSize))
+				result.add(new Point(dx + x,dy - y));			
+			if (checkBounds(dx - x, dy + y , gridSize))
+				result.add(new Point(dx - x,dy + y));			
+			if (checkBounds(dx - x, dy - y , gridSize))
+				result.add(new Point(dx - x,dy - y));
 			
 		}
 	
 		return result;		
 	}
+	
+	private static boolean checkBounds(int x, int y, int n)
+	{
+		if (x < 0 || y < 0) return false;
+		if (x >= n || y >= n) return false; 
+		return true;
+	}
 }
+
