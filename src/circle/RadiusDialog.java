@@ -19,8 +19,11 @@ import javax.swing.JLabel;
 public class RadiusDialog extends JPanel {
 
 	/**
-	 * 
+	 *  
 	 */
+	
+	
+	// ∆орик - лЄлик
 	private static final long serialVersionUID = 1L;
 	//private final JPanel contentPanel = new JPanel();
 	private JTextField JRadiusField;
