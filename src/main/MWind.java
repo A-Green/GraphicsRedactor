@@ -6,7 +6,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.Point;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -21,17 +20,17 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Checkbox;
-import java.awt.Color;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.swing.JPopupMenu;
 import java.awt.Component;
 import circle.*;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 public class MWind extends JFrame {
 	
 	/**
@@ -40,8 +39,6 @@ public class MWind extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Grid grid = new Grid(300);
 	private RadiusDialog dialog = null;
-	private int count = 0;
-	private ArrayList<Point> coloredEx1 = new ArrayList<Point>();
 
 	/**
 	 * Launch the application.
@@ -66,7 +63,7 @@ public class MWind extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 507, 485);
 		// сетка
-		final JPanel gridView = new GridView(grid);
+		final GridView gridView = new GridView(grid);
 		// верхнее меню
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -87,19 +84,8 @@ public class MWind extends JFrame {
 		// пошаговое построение фигур при нажатии на кнопку, если выбран режим "steply"
 		stepBotton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-					if(count<coloredEx1.size()-1)
-					{
-						grid.getExcel(coloredEx1.get(count).x, coloredEx1.get(count).y).setColored(true);	
-						gridView.repaint();
-						count++;
-					}
-					if(count==coloredEx1.size()-1)
-					{
-						stepBotton.setEnabled(false);
-						count = 0;
-					}
-				
+				gridView.drawDotSteply();
+				gridView.repaint();
 			}
 
 		});
@@ -130,6 +116,14 @@ public class MWind extends JFrame {
 		});
 		
 		final Checkbox stepCheckBox = new Checkbox("Steply     ");
+		stepCheckBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				 if (arg0.getStateChange() == ItemEvent.DESELECTED)
+					 stepBotton.setEnabled(false);
+				 if (arg0.getStateChange() == ItemEvent.SELECTED)
+					 stepBotton.setEnabled(true);	 
+			}
+		});
 		bottonPanel.add(stepCheckBox);
 		
 		
@@ -145,7 +139,7 @@ public class MWind extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				
-				ArrayList<Point> coloredEx = LineGenerator.DDA(grid);	
+				ArrayList<Excel> coloredEx = LineGenerator.DDA(grid);	
 				if (coloredEx == null)
 				{
 					JOptionPane.showMessageDialog(new JButton(),
@@ -153,18 +147,15 @@ public class MWind extends JFrame {
 							JOptionPane.WARNING_MESSAGE);
 				}
 				else
-				{					
-					if(stepCheckBox.getState() == false)
-					{
-						for (int i = 0; i < coloredEx.size(); i++)
-							grid.getExcel(coloredEx.get(i).x, coloredEx.get(i).y).setColored(true);	
-						gridView.repaint();
-					}
-					else
-					{
-						stepBotton.setEnabled(true);
-						coloredEx1 = coloredEx;
-					}
+				{		if (stepCheckBox.getState() == false)
+						{
+							gridView.drawDots(coloredEx);
+							gridView.repaint();	
+						}
+						else 
+						{
+							gridView.setSteplyArray(coloredEx);
+						}
 					
 				}
 			}
@@ -176,7 +167,7 @@ public class MWind extends JFrame {
 		itemBrezenh.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				ArrayList<Point> coloredEx = LineGenerator.Brezenhem(grid);
+				ArrayList<Excel> coloredEx = LineGenerator.Brezenhem(grid);
 				
 				if (coloredEx == null)
 				{
@@ -188,14 +179,13 @@ public class MWind extends JFrame {
 				{					
 					if(stepCheckBox.getState() == false)
 					{
-						for (int i = 0; i < coloredEx.size(); i++)
-							grid.getExcel(coloredEx.get(i).x, coloredEx.get(i).y).setColored(true);	
+						gridView.drawDots(coloredEx);
 						gridView.repaint();
+
 					}
 					else
 					{
-						stepBotton.setEnabled(true);
-						coloredEx1 = coloredEx;
+						gridView.setSteplyArray(coloredEx);
 					}
 					
 				}
@@ -208,7 +198,7 @@ public class MWind extends JFrame {
 		itemAntiAliasing.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				Map<Point,Color> coloredEx= LineGenerator.WuAlgorithm(grid);
+				ArrayList<Excel> coloredEx = LineGenerator.WuAlgorithm(grid);
 				
 				if (coloredEx == null)
 				{
@@ -218,14 +208,16 @@ public class MWind extends JFrame {
 				}
 				else
 				{
-					for (Map.Entry<Point, Color> entry : coloredEx.entrySet())
+					if(stepCheckBox.getState() == false)
 					{
-						Color color = entry.getValue();
-						if (color != null)
-					    grid.getExcel(entry.getKey().x, entry.getKey().y).setColor(color);
+						gridView.drawDots(coloredEx);
+						gridView.repaint();
+
 					}
-					
-				gridView.repaint();
+					else 
+					{
+						gridView.setSteplyArray(coloredEx);
+					}
 				}
 			}
 		});
@@ -259,7 +251,7 @@ public class MWind extends JFrame {
 				
 				if(radius != -1)
 				{
-					ArrayList<Point> coloredEx = CircleGenerator.circle(grid,radius);
+					ArrayList<Excel> coloredEx = CircleGenerator.circle(grid,radius);
 					if(coloredEx == null) 
 						{
 						JOptionPane.showMessageDialog(new JButton(),
@@ -270,14 +262,12 @@ public class MWind extends JFrame {
 					{	
 						if(stepCheckBox.getState() == false)
 						{
-							for (int i = 0; i < coloredEx.size(); i++)
-								grid.getExcel(coloredEx.get(i).x, coloredEx.get(i).y).setColored(true);	
+							gridView.drawDots(coloredEx);
 							gridView.repaint();
 						}
 						else
 						{
-							stepBotton.setEnabled(true);
-							coloredEx1 = coloredEx;
+							gridView.setSteplyArray(coloredEx);
 						}
 					}
 				}

@@ -3,16 +3,15 @@ package lineGeneration;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
+import model.Excel;
 import model.Grid;
 
 public class LineGenerator {
 	
-	public static ArrayList<Point> DDA(Grid g)
+	public static ArrayList<Excel> DDA(Grid g)
 	{
-		ArrayList<Point> result = new ArrayList<Point>();
+		ArrayList<Excel> result = new ArrayList<Excel>();
 		
 		System.out.println("ЦДА");
 		int count = 0;
@@ -82,7 +81,7 @@ public class LineGenerator {
 				while (i < length) {
 				x = x + dx;
 				y = y + dy;				
-				result.add(new Point((int) x,(int) y));
+				result.add(new Excel((int) x,(int) y, Color.black));
 				i++;
 				}
 			}
@@ -93,7 +92,7 @@ public class LineGenerator {
 				while (i < length) {
 				x = x + dx;
 				y = y + dy;				
-				result.add(new Point((int) x,(int) y + 1));
+				result.add(new Excel((int) x,(int) y + 1, Color.black));
 				i++;
 			}
 			}
@@ -103,10 +102,10 @@ public class LineGenerator {
 		return result;		
 	}
 	
-	public static ArrayList<Point> Brezenhem(Grid g)
+	public static ArrayList<Excel> Brezenhem(Grid g)
 	{
 		System.out.println("brezenhem");
-		ArrayList<Point> result = new ArrayList<Point>();		
+		ArrayList<Excel> result = new ArrayList<Excel>();		
 		int count = 0;
 		int mas[] = { 0, 0, 0, 0 };
 		int n = 0;
@@ -123,7 +122,6 @@ public class LineGenerator {
 				}
 			}
 		}
-		// вообще нужно возвращать null, но пока пусть так
 		if (count != 2) return null;
 			else {
 					
@@ -132,8 +130,8 @@ public class LineGenerator {
 			int x2 = mas[2];
 			int y2 = mas[3];
 			
-			int dx = x2 - x1;     //проекция на ось икс
-			int dy = y2 - y1;     //проекция на ось игрек
+			int dx = x2 - x1;     //проекция на ось x
+			int dy = y2 - y1;     //проекция на ось y
 			
 			if (dy == 0) return horizontalLine(x1, x2, y1);
 			if (dx == 0) return verticalalLine(y1, y2, x1);
@@ -142,7 +140,7 @@ public class LineGenerator {
 			int incx = Sign(dx);  			
 			 /*
 	         * Определяем, в какую сторону нужно будет сдвигаться. Если dx < 0, т.е. отрезок идёт
-	         * справа налево по иксу, то incx будет равен -1.
+	         * справа налево по x, то incx будет равен -1.
 	         * Это будет использоваться в цикле постороения.
 	         */
 			int incy = Sign(dy);
@@ -196,17 +194,17 @@ public class LineGenerator {
 					x += pdx;		//продолжить тянуть прямую дальше, т.е. сдвинуть влево или вправо, если
 					y += pdy;		//цикл идёт по иксу; сдвинуть вверх или вниз, если по y
 				}
-				
-				result.add(new Point(x,y));
+
+				result.add(new Excel(x,y,Color.black));
 			}			
 		}
 		
 		return result;
 	}
 
-	public static Map<Point,Color> WuAlgorithm (Grid g)
+	public static ArrayList<Excel> WuAlgorithm (Grid g)
 	{
-		Map<Point,Color>result = new HashMap<Point,Color>();	
+		ArrayList<Excel>result = new ArrayList<Excel>();	
 		int count = 0;
 		int mas[] = { 0, 0, 0, 0 };
 		int n = 0;
@@ -234,8 +232,12 @@ public class LineGenerator {
 			  double dx = x2 - x1;
 			  double dy = y2 - y1;
 			  
-			  // надо бы проверочку на простые линии...
 			  
+			  //проверка на простые линии
+			  if (dy == 0) return horizontalLine(x1, x2, y1);
+			  if (dx == 0) return verticalalLine(y1, y2, x1);
+			  if (Math.abs(dx) == Math.abs(dy)) return diagonalLine(x1, y1, x2, y2);
+			  		  			  
 			  if ( Math.abs(dx) > Math.abs(dy) ) { // если true, значит приращение будет идти по оси x
 			    if ( x2 < x1 ) {   			
 			      int temp = x1;				// меняем местами координаты чтобы идти слева направо
@@ -249,20 +251,18 @@ public class LineGenerator {
 			    double gradient = dy / dx;			// вычисление градиента. будет использоваться для установки цвета пикселя
 			    												//далее необходимо обработать первую точку
 
-			    result.put(new Point(x1,y1), Color.black);
-			    result.put(new Point(x1, y1 + 1), null);
+			    result.add(new Excel(x1,y1, Color.black));
 			    												// а теперь вторую
 			    double intery = y1 + gradient;
 
-			    result.put(new Point(x2,y2), Color.black);   
-			    result.put(new Point(x2, y2 + 1), null);
+			    result.add(new Excel(x2,y2, Color.black));   
 			    
 			 // т.к осью приращения была выбрана ось x, то идя по ней от т. x1 до т. х2, используя приращение, выстраивается линия
 			 // Исопльзуя значение отклонения пикселя от предполагаемой линии, регулируется интенсивность цвета
 			    for(int x = x1 + 1; x <= (x2 - 1); x++) 						    										
 			    {			    	
-			    	 result.put(new Point(x,(int) intery), getColor(rfpart(intery)));
-			    	 result.put(new Point(x,(int) intery + 1), getColor(fpart(intery)));
+			    	 result.add(new Excel(x,(int) intery, getColor(rfpart(intery))));
+			    	 result.add(new Excel(x,(int) intery + 1, getColor(fpart(intery))));
 			    	 intery += gradient;
 			    }
 			  } else {									// дейсвия аналогичны тем, что при верном if, только теперь 
@@ -279,19 +279,17 @@ public class LineGenerator {
 			    
 			    double gradient = dx / dy;
 			    
-			    result.put(new Point(x1,y1), Color.black);
-			    result.put(new Point(x1, y1 + 1), null);
+			    result.add(new Excel(x1,y1, Color.black));
 			    
 			    double interx = x1 + gradient;
 
-			    result.put(new Point(x2,y2), Color.black);
-			    result.put(new Point(x2, y2 + 1), null);
+			    result.add(new Excel(x2,y2, Color.black));
 			    
 			    int y;
 			    for(y=y1+1; y <= (y2-1); y++) 
 			    {	    	
-			    	result.put(new Point((int) interx, y), getColor(rfpart(interx)));
-			    	result.put(new Point((int) interx + 1, y), getColor(fpart(interx)));
+			    	result.add(new Excel((int) interx, y, getColor(rfpart(interx))));
+			    	result.add(new Excel((int) interx + 1, y, getColor(fpart(interx))));
 			    	interx += gradient;
 			    }
 			  }
@@ -326,9 +324,9 @@ public class LineGenerator {
 	
 	private static Color getColor(double rate)
 	{
-		if (rate >= 0.6)
+		if (rate >= 0.7)
 			return Color.black;
-		if (rate < 0.6 && rate >= 0.5)
+		if (rate < 0.7 && rate >= 0.5)
 			return Color.black.brighter();
 		if (rate < 0.5 && rate >= 0.4)
 			return Color.gray;
@@ -336,43 +334,40 @@ public class LineGenerator {
 			return Color.gray.brighter();
 		if (rate < 0.3 && rate >= 0.1)
 			return Color.lightGray;		
-		return null;
-		
-		//return new Color(0,255,0,(int)(rate * 100));
-				
+		return null;				
 	}
 	
 	
-	public static ArrayList<Point> horizontalLine(int x1, int x2, int y)
+	public static ArrayList<Excel> horizontalLine(int x1, int x2, int y)
 	{	
 		System.out.println("horizotal line");
-		ArrayList<Point> result = new ArrayList<Point>();
+		ArrayList<Excel> result = new ArrayList<Excel>();
 		int x = (x1 > x2) ? x2 : x1;
 		int length = Math.abs(x1 - x2);
 		
 		for (int i = 0; i < length; i++)
-			result.add(new Point(x + i, y));
+			result.add(new Excel(x + i, y, Color.black));
 		
 		return result;
 	}
 	
-	public static ArrayList<Point> verticalalLine(int y1, int y2, int x)
+	public static ArrayList<Excel> verticalalLine(int y1, int y2, int x)
 	{
 		System.out.println("vertical line");
-		ArrayList<Point> result = new ArrayList<Point>();
+		ArrayList<Excel> result = new ArrayList<Excel>();
 		int y = (y1 > y2) ? y2 : y1;
 		int length = Math.abs(y1 - y2);
 		
 		for (int i = 0; i < length; i++)
-			result.add(new Point(x, y + i));
+			result.add(new Excel(x, y + i, Color.black));
 		
 		return result;
 	}
 	
-	public static ArrayList<Point> diagonalLine(int x1, int y1, int x2, int y2)
+	public static ArrayList<Excel> diagonalLine(int x1, int y1, int x2, int y2)
 	{	
 		System.out.println("diagonal line");
-		ArrayList<Point> result = new ArrayList<Point>();	
+		ArrayList<Excel> result = new ArrayList<Excel>();	
 		int increm;
 		
 		if (x1 < x2) 
@@ -381,7 +376,7 @@ public class LineGenerator {
 			
 			for (int x = x1; x < x2; x++, y1+=increm )
 			{
-				result.add(new Point(x, y1));
+				result.add(new Excel(x, y1, Color.black));
 			}
 
 		}
@@ -391,7 +386,7 @@ public class LineGenerator {
 			
 			for (int x = x2; x < x1; x++, y2+=increm )
 			{
-				result.add(new Point(x, y2));
+				result.add(new Excel(x, y2, Color.black));
 			}
 		}
 				

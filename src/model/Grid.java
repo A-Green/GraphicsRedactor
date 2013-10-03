@@ -14,7 +14,7 @@ public class Grid {
 	 
 	 for (int i = 0; i < n; i++)
 		 for (int j = 0; j < n; j++)
-			 grid[i][j] = new Excel();
+			 grid[i][j] = new Excel(i,j);
 	}
 	
 	public int getStep() {
@@ -29,6 +29,7 @@ public class Grid {
 	{
 		grid[x][y]=e;
 	}
+	
 	
 	public Excel getExcel(int x, int y) 
 	{
