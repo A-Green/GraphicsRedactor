@@ -1,15 +1,16 @@
 package circle;
 
-import java.awt.Point;
+import java.awt.Color;
 import java.util.ArrayList;
 
+import model.Excel;
 import model.Grid;
 
 public class CircleGenerator {
 
-	public static ArrayList<Point> circle(Grid g, int R)
+	public static ArrayList<Excel> circle(Grid g, int R)
 	{
-		ArrayList<Point> result = new ArrayList<Point>();
+		ArrayList<Excel> result = new ArrayList<Excel>();
 		int dx = -1;
 		int dy = -1;
 		for (int i = 0; i < g.getSize(); i++) 
@@ -35,14 +36,11 @@ public class CircleGenerator {
 		int x = 0;
 		int y = R;
 		double delta = 2 - 2 * R;       //первоначальное значение ошибки
-		int gridSize = g.getSize();
 		
 		if (R > 0)
 		{
-			if (checkBounds(x + dx, dy + y , gridSize))
-		result.add(new Point(x + dx,dy + y));
-			if (checkBounds(x + dx, dy - y , gridSize))
-		result.add(new Point(x + dx,dy - y));
+		result.add(new Excel(x + dx,dy + y, Color.black));
+		result.add(new Excel(x + dx,dy - y, Color.black));
 		}
 		
 		while(y > limit) 
@@ -87,25 +85,14 @@ public class CircleGenerator {
 				}
 			}
 			
-			if (checkBounds(x + dx, dy + y , gridSize))
-				result.add(new Point(dx + x,dy + y)); // смещаем точки относительно центра			
-			if (checkBounds(x + dx, dy - y , gridSize))
-				result.add(new Point(dx + x,dy - y));			
-			if (checkBounds(dx - x, dy + y , gridSize))
-				result.add(new Point(dx - x,dy + y));			
-			if (checkBounds(dx - x, dy - y , gridSize))
-				result.add(new Point(dx - x,dy - y));
+				result.add(new Excel(dx + x,dy + y, Color.black)); // смещаем точки относительно центра				
+				result.add(new Excel(dx + x,dy - y, Color.black));					
+				result.add(new Excel(dx - x,dy + y, Color.black));						
+				result.add(new Excel(dx - x,dy - y, Color.black));
 			
 		}
 	
 		return result;		
-	}
-	
-	private static boolean checkBounds(int x, int y, int n)
-	{
-		if (x < 0 || y < 0) return false;
-		if (x >= n || y >= n) return false; 
-		return true;
-	}
+	}	
 }
 

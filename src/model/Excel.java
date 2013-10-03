@@ -4,20 +4,26 @@ import java.awt.Color;
 
 public class Excel {
 	
+	private int x;
+	private int y;
 	private int z;
 	private int t;
 	private boolean colored;
 	private Color color = Color.black;
 	
-	public Excel()
+	public Excel(int x, int y)
 	{
 		setColored(false);
+		setX(x);
+		setY(y);
 		setT(0);
 		setZ(0);
 	}
 	
-	public Excel(Color col)
+	public Excel(int x, int y,Color col)
 	{
+		setX(x);
+		setY(y);
 		setT(0);
 		setZ(0);
 		setColor(col);
@@ -30,10 +36,32 @@ public class Excel {
 	
 	public void setColor(Color col)
 	{
+		if (col != null)
+		{
 		color = col;
 		setColored(true);
+		}
 	}
 	
+	public int getX()
+	{
+		return this.x; 
+	}
+	
+	public int getY()
+	{
+		return this.y; 
+	}
+	
+	public void setX(int x)
+	{
+		this.x = x; 
+	}
+	
+	public void setY(int y)
+	{
+		this.y = y; 
+	}
 	public int getZ() {
 		return z;
 	}
@@ -57,6 +85,11 @@ public class Excel {
 	public void setColored(Color col) {
 		this.colored = true;
 		setColor(col);
+	}
+	
+	public String toString()
+	{
+		return "X:" + x + " Y:" + y + " Color: " + ((colored)? getColor().toString() : "no");
 	}
 	
 	
