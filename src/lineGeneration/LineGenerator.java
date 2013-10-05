@@ -102,33 +102,17 @@ public class LineGenerator {
 		return result;		
 	}
 	
-	public static ArrayList<Excel> Brezenhem(Grid g)
+	public static ArrayList<Excel> Brezenhem(Excel ex1, Excel ex2)
 	{
 		System.out.println("brezenhem");
 		ArrayList<Excel> result = new ArrayList<Excel>();		
-		int count = 0;
-		int mas[] = { 0, 0, 0, 0 };
-		int n = 0;
-		for (int i = 0; i < g.getSize(); i++) {
-			for (int j = 0; j < g.getSize(); j++) {
-				if (g.getExcel(i, j).isColored() == true) {
-					if (n < 4) {
-						mas[n] = i;// *g.getStep();
-						n++;
-						mas[n] = j;// *g.getStep();
-						n++;
-					}
-					count++;
-				}
-			}
-		}
-		if (count != 2) return null;
-			else {
-					
-			int x1 = mas[0];
-			int y1 = mas[1];
-			int x2 = mas[2];
-			int y2 = mas[3];
+
+		if (ex1 == null || ex2 == null) return null;
+
+			int x1 = ex1.getX();
+			int y1 = ex1.getY();
+			int x2 = ex2.getX();
+			int y2 = ex2.getY();
 			
 			int dx = x2 - x1;     //проекция на ось x
 			int dy = y2 - y1;     //проекция на ось y
@@ -197,37 +181,20 @@ public class LineGenerator {
 
 				result.add(new Excel(x,y,Color.black));
 			}			
-		}
 		
 		return result;
 	}
 
-	public static ArrayList<Excel> WuAlgorithm (Grid g)
+	public static ArrayList<Excel> WuAlgorithm (Excel ex1, Excel ex2)
 	{
 		ArrayList<Excel>result = new ArrayList<Excel>();	
-		int count = 0;
-		int mas[] = { 0, 0, 0, 0 };
-		int n = 0;
-		for (int i = 0; i < g.getSize(); i++) {
-			for (int j = 0; j < g.getSize(); j++) {
-				if (g.getExcel(i, j).isColored() == true) {
-					if (n < 4) {
-						mas[n] = i;// *g.getStep();
-						n++;
-						mas[n] = j;// *g.getStep();
-						n++;
-					}
-					count++;
-				}
-			}
-		}
-		if (count != 2) return null;
-			else {			
+
+		if (ex1 == null || ex2 == null) return null;		
 			
-			int x1 = mas[0];
-			int y1 = mas[1];
-			int x2 = mas[2];
-			int y2 = mas[3];
+			int x1 = ex1.getX();
+			int y1 = ex1.getY();
+			int x2 = ex2.getX();
+			int y2 = ex2.getY();
 			
 			  double dx = x2 - x1;
 			  double dy = y2 - y1;
@@ -294,7 +261,7 @@ public class LineGenerator {
 			    }
 			  }
 			
-			}
+			
 	         					
 		return result;
 		
