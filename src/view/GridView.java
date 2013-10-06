@@ -61,7 +61,7 @@ public class GridView extends JPanel{
 	        	}
 	        }    
 	    }
-	  
+	  // отрисовывает сразу все точки
 	  public void drawDots(ArrayList<Excel> exs)
 	  {
 		  
@@ -82,6 +82,7 @@ public class GridView extends JPanel{
 		  steplyArray = arr;
 	  }
 	  
+	  // рисует первую точку из массива для пошаговой отрисовки
 	  public void drawDotSteply()
 	  {
 		  if (steplyArray != null && !steplyArray.isEmpty())

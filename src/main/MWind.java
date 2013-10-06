@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JPopupMenu;
+
 import java.awt.Component;
 import circle.*;
 import java.awt.event.ItemListener;
@@ -167,7 +168,7 @@ public class MWind extends JFrame {
 		itemBrezenh.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				ArrayList<Excel> coloredEx = LineGenerator.Brezenhem(grid);
+				ArrayList<Excel> coloredEx = LineGenerator.Brezenhem(grid.getClickedEx(), grid.getClickedEx());
 				
 				if (coloredEx == null)
 				{
@@ -198,7 +199,7 @@ public class MWind extends JFrame {
 		itemAntiAliasing.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				ArrayList<Excel> coloredEx = LineGenerator.WuAlgorithm(grid);
+				ArrayList<Excel> coloredEx = LineGenerator.WuAlgorithm(grid.getClickedEx(), grid.getClickedEx());
 				
 				if (coloredEx == null)
 				{
@@ -251,7 +252,7 @@ public class MWind extends JFrame {
 				
 				if(radius != -1)
 				{
-					ArrayList<Excel> coloredEx = CircleGenerator.circle(grid,radius);
+					ArrayList<Excel> coloredEx = CircleGenerator.circle(grid.getClickedEx(),radius);
 					if(coloredEx == null) 
 						{
 						JOptionPane.showMessageDialog(new JButton(),
@@ -285,10 +286,9 @@ public class MWind extends JFrame {
 		popupClear.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				for (int i = 0; i < grid.getSize(); i++)
-					for (int j = 0; j < grid.getSize(); j++)
-						grid.getExcel(i, j).setColored(false);
-				repaint();
+				grid.clear();
+				gridView.setSteplyArray(null);
+				gridView.repaint();
 			}
 		});
 		
@@ -298,18 +298,19 @@ public class MWind extends JFrame {
 		gridView.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				
+				
 				if(arg0.getWheelRotation() < 0)
 					grid.setStep(grid.getStep() + 2);
 				else if (grid.getStep() > 1) 
-					grid.setStep(grid.getStep() - 1);
-				gridView.repaint();
+					grid.setStep(grid.getStep() - 1);	
+			gridView.repaint();
+
 			}
 		});
 		
 		// Щелчок мыши по сетке
 		gridView.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent event) {
-				
+			public void mouseClicked(MouseEvent event) {				
 				// если левой клавишей и координаты точки не превышают размер сетки - рисуем пиксель
 				if (SwingUtilities.isLeftMouseButton(event) 
 						&& event.getX()<=grid.getSize()*grid.getStep()
@@ -318,9 +319,13 @@ public class MWind extends JFrame {
 					int y = event.getY() / grid.getStep();
 					if (grid.getExcel(x, y).isColored() == false) {
 						grid.getExcel(x, y).setColored(true);
-						repaint();
+						
+						grid.addClickedEx(grid.getExcel(x, y));
+						
+						gridView.repaint();
 					} else {
 						grid.getExcel(x, y).setColored(false);
+						grid.removeClickedEx(grid.getExcel(x, y));
 						gridView.repaint();
 					}
 				}
