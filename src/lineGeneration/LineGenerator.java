@@ -142,7 +142,7 @@ public class LineGenerator {
 			{
 				/*
 		          * Если dx > dy, то значит отрезок "вытянут" вдоль оси икс, т.е. он скорее длинный, чем высокий.
-		          * Значит в цикле нужно будет идти по икс (строчка el = dx;), значит "протягивать" прямую по иксу
+		          * Значит, в цикле нужно будет идти по икс (строчка el = dx;), значит "протягивать" прямую по иксу
 		          * надо в соответствии с тем, слева направо и справа налево она идёт (pdx = incx;), при этом
 		          * по y сдвиг такой отсутствует.
 		          */	
@@ -309,12 +309,12 @@ public class LineGenerator {
 	{	
 		System.out.println("horizotal line");
 		ArrayList<Excel> result = new ArrayList<Excel>();
-		int x = (x1 > x2) ? x2 : x1;
-		int length = Math.abs(x1 - x2);
+		int x = (x1 > x2) ? x2 : x1;   // выбираем отправную точку, чтобы двигаться слева направо
+		int length = Math.abs(x1 - x2); // вычисляем длинну линии
 		
-		for (int i = 0; i < length; i++)
-			result.add(new Excel(x + i, y, Color.black));
-		
+		for (int i = 0; i <= length; i++)
+			result.add(new Excel(x + i, y, Color.black)); // прибавляем к значению x по единице, пока не 
+													  // достигнем длины линии	
 		return result;
 	}
 	
@@ -322,11 +322,12 @@ public class LineGenerator {
 	{
 		System.out.println("vertical line");
 		ArrayList<Excel> result = new ArrayList<Excel>();
-		int y = (y1 > y2) ? y2 : y1;
-		int length = Math.abs(y1 - y2);
-		
-		for (int i = 0; i < length; i++)
-			result.add(new Excel(x, y + i, Color.black));
+		int y = (y1 > y2) ? y2 : y1;     // выбираем отправную точку, чтобы двигаться снизу вверх
+		int length = Math.abs(y1 - y2); // вычисляем длину вертикальной линии
+
+		for (int i = 0; i <= length; i++)
+			result.add(new Excel(x, y + i, Color.black)); //прибавляем к начению y по единице, пока не
+														// достигнем длины линнии
 		
 		return result;
 	}
@@ -337,17 +338,19 @@ public class LineGenerator {
 		ArrayList<Excel> result = new ArrayList<Excel>();	
 		int increm;
 		
-		if (x1 < x2) 
+		result.add(new Excel(x2, y2, Color.black));
+		if (x1 < x2)    // движемся слева направо
 		{
-			increm = (y1 < y2) ? 1 : -1;
+			increm = (y1 < y2) ? 1 : -1; // 1, если движемся снизу вверх, -1 наоборот
 			
-			for (int x = x1; x < x2; x++, y1+=increm )
+			for (int x = x1; x < x2; x++, y1+=increm ) // увеличиваем x на 1
+														//а у на 1 либо на -1
 			{
 				result.add(new Excel(x, y1, Color.black));
 			}
 
 		}
-		else 
+		else 						//движемся справа налево. Далее аналогичные действия
 		{
 			increm = (y1 < y2) ? -1 : 1;
 			

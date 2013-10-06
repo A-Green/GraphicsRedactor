@@ -284,7 +284,11 @@ public class MWind extends JFrame {
 	//-------------------------------------------------------------------------------------------------------------------------------
 		
 	//---------------------------------Параметрические кривые-------------------------------------------------------------------------
+<<<<<<< HEAD
 		JMenu curveMenu = new JMenu("Параметрические кривые");
+=======
+		JMenu curveMenu = new JMenu("\u041F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u043A\u0440\u0438\u0432\u044B\u0435");
+>>>>>>> d08be521e02674f2fca8061f5e212114df6866f9
 		menuBar.add(curveMenu);
 		
 		//Эрмит
@@ -294,7 +298,10 @@ public class MWind extends JFrame {
 			public void mousePressed(MouseEvent e)
 			{
 				ArrayList<Excel> coloredEx = CurveGenerator.ErmitForm(grid.getClickedEx(), grid.getClickedEx(),grid.getClickedEx(),grid.getClickedEx());
+<<<<<<< HEAD
 
+=======
+>>>>>>> d08be521e02674f2fca8061f5e212114df6866f9
 				if (coloredEx == null)
 				{
 					JOptionPane.showMessageDialog(new JButton(),
