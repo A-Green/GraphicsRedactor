@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.Event;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -27,6 +28,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JPopupMenu;
+
+import curveGeneration.CurveGenerator;
 
 import java.awt.Component;
 import circle.*;
@@ -277,6 +280,51 @@ public class MWind extends JFrame {
 		});
 		menu.add(menuCircle);
 		
+		
+	//-------------------------------------------------------------------------------------------------------------------------------
+		
+	//---------------------------------ѕараметрические кривые-------------------------------------------------------------------------
+		JMenu curveMenu = new JMenu("ѕараматрические кривые");
+		menuBar.add(curveMenu);
+		
+		//Ёрмит
+		JMenuItem ermitaItem = new JMenuItem("форма Ёрмита");
+		ermitaItem.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				ArrayList<Excel> coloredEx = CurveGenerator.ErmitForm(grid.getClickedEx(), grid.getClickedEx(),grid.getClickedEx(),grid.getClickedEx());
+				for(int i=0;i<coloredEx.size();i++)
+				{
+					coloredEx.get(i).toString();
+				}
+				if (coloredEx == null)
+				{
+					JOptionPane.showMessageDialog(new JButton(),
+							"¬ыберите 4 точки!", "»нформаци€",
+							JOptionPane.WARNING_MESSAGE);
+				}
+				else
+				{					
+					if(stepCheckBox.getState() == false)
+					{
+						gridView.drawDots(coloredEx);
+						gridView.repaint();
+					}
+					else
+					{
+						gridView.setSteplyArray(coloredEx);
+					}
+					
+				}
+			}
+			
+		});
+		curveMenu.add(ermitaItem);
+		
+	//-----------------------------------------------------------------------------------------------------------------------------------
+	
+	
 	//-----------------------------------------------------------------------------------------------------------------------------------	
 		//всплывающа€ менюшка
 		JPopupMenu popupMenu = new JPopupMenu();
