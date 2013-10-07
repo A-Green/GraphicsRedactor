@@ -79,7 +79,15 @@ public class GridView extends JPanel{
 	  
 	  public void setSteplyArray(ArrayList<Excel> arr)
 	  {
+		  for(int i=0; i<arr.size(); i++)
+			  if(arr.get(i).getX()>=grid.getSize() || arr.get(i).getY()>=grid.getSize() || arr.get(i).getX()<0 || arr.get(i).getY()<0)
+				  arr.remove(i);
 		  steplyArray = arr;
+	  }
+	  
+	  public void clearStepArray()
+	  {
+		  steplyArray = null;
 	  }
 	  
 	  // рисует первую точку из массива для пошаговой отрисовки

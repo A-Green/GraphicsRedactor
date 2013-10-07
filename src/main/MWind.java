@@ -16,6 +16,8 @@ import javax.swing.SwingUtilities;
 import lineGeneration.LineGenerator;
 import model.*;
 import view.*;
+import parabola.*;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -42,6 +44,7 @@ public class MWind extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Grid grid = new Grid(300);
 	private RadiusDialog dialog = null;
+	private PDialog p_dialog = null;
 
 	/**
 	 * Launch the application.
@@ -142,7 +145,7 @@ public class MWind extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				
-				ArrayList<Excel> coloredEx = LineGenerator.DDA(grid);	
+				ArrayList<Excel> coloredEx = LineGenerator.DDA(grid.getClickedEx(), grid.getClickedEx());	
 				if (coloredEx == null)
 				{
 					JOptionPane.showMessageDialog(new JButton(),
@@ -279,6 +282,44 @@ public class MWind extends JFrame {
 		});
 		menu.add(menuCircle);
 		
+		// Парабола (тестовый режим)
+				JMenuItem menuParabola = new JMenuItem("Парабола");
+				menuParabola.addActionListener(new ActionListener() {
+
+					public void actionPerformed(ActionEvent e) {
+
+						double p_value = 0;
+
+						if (p_dialog == null) {
+							p_dialog = new PDialog("p_value :");
+						}
+						p_dialog.setText("1");
+						if (p_dialog.showDialog(MWind.this, "p_value")) {
+							p_value = p_dialog.getpValue();
+						}
+
+						if (p_value != 0) {
+							ArrayList<Excel> coloredEx = ParabolaGenerator.parabola(
+									grid.getClickedEx(), p_value, grid.getSize());
+							if (coloredEx == null) {
+								JOptionPane.showMessageDialog(new JButton(),
+										"Укажите вершину параболы!", "Информация",
+										JOptionPane.WARNING_MESSAGE);
+							} else {
+								if (stepCheckBox.getState() == false) {
+									gridView.drawDots(coloredEx);
+									gridView.repaint();
+								} else {
+									gridView.setSteplyArray(coloredEx);
+								}
+							}
+						}
+
+					}
+				});
+				menu.add(menuParabola);
+
+		
 		
 	//-------------------------------------------------------------------------------------------------------------------------------
 		
@@ -334,7 +375,7 @@ public class MWind extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				grid.clear();
-				gridView.setSteplyArray(null);
+				gridView.clearStepArray();
 				gridView.repaint();
 			}
 		});
