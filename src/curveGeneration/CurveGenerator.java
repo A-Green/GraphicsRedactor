@@ -1,39 +1,41 @@
 package curveGeneration;
 
 import java.awt.Color;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-import lineGeneration.LineGenerator;
 import model.Excel;
 
 public class CurveGenerator {
 	
-	public static ArrayList<Excel> ErmitForm(Excel ex1, Excel ex2, Excel ex3, Excel ex4)
+	public static ArrayList<Excel> ErmitForm(Excel ex4, Excel ex3, Excel ex2, Excel ex1)
 	{
 		System.out.println("ermitForm");
-		ArrayList<Excel> result = new ArrayList<Excel>();
-		ArrayList<Excel> Result = new ArrayList<Excel>();	
-		NumberFormat formatter = new DecimalFormat("0.0##########");
+		ArrayList<Excel> result = new ArrayList<Excel>();	
+		//NumberFormat formatter = new DecimalFormat("0.0##########");
 		
 		if(ex1==null || ex2==null || ex3==null || ex4==null) return null;
 		
-			int Px1 = ex4.getX();
-			int Py1 = ex4.getY();
-			int Px4 = ex3.getX();
-			int Py4 = ex3.getY();
+			int Px1 = ex1.getX();
+			int Py1 = ex1.getY();
+
+			int Px4 = ex4.getX();
+			int Py4 = ex4.getY();
 			
-			int Rx1 = ex2.getX();
-			int Ry1 = ex2.getY();
-			int Rx4 = ex1.getX();
-			int Ry4 = ex1.getY();
+			Point r1 = rVector(ex1, ex2);
+	        Point r4 = rVector(ex3, ex4);
+			
+			//System.out.println(Px1+" : "+Px4+" : "+Rx1+" : "+Rx4);
 			
 			ex1.setColor(Color.red);
 			ex2.setColor(Color.red);
+			ex3.setColor(Color.red);
+			ex4.setColor(Color.red);
 			
 			Matrix Gnx = new Matrix(4,2);
-			double masGnx[] = {Px1,Py1,Px4,Py4,Rx1,Ry1,Rx4,Ry4};
+			double masGnx[] = {Px1,Py1,Px4,Py4,r1.getX(),r1.getY(),r4.getX(),r4.getY()};
 			Gnx.fillingMatrix(masGnx);
 			Gnx.showMatrix();
 			
@@ -49,18 +51,21 @@ public class CurveGenerator {
 			{
 				Cx = matrixMultiplication(Mn,Gnx);
 				
-				for(double i=0; i<=1; i+=0.1)
+				double step = getStep(ex1,ex2,ex3,ex4);
+				
+				for(double i=0; i<=1; i+=step)
 				{
 					Matrix T = new Matrix(1,4);
-					double masT[] = {Double.parseDouble(formatter.format(Math.pow(i,3)).replace(',', '.')),
+					/*double masT[] = {Double.parseDouble(formatter.format(Math.pow(i,3)).replace(',', '.')),
 							Double.parseDouble(formatter.format(Math.pow(i,2)).replace(',', '.')),
 							Double.parseDouble(formatter.format(Math.pow(i,1)).replace(',', '.')),
-							1};
+							1};*/
+					double masT[] = {Math.pow(i,3),Math.pow(i,2),Math.pow(i,1),1};
 					T.fillingMatrix(masT);
 					
 					if(matrixMultiplication(T,Cx) != null)
 					{
-						Matrix Pt = new Matrix(0,0);
+						Matrix Pt;
 						Pt = matrixMultiplication(T,Cx);
 						
 						if(Pt.getColumns() == 1 && Pt.getRows() == 2)
@@ -69,22 +74,13 @@ public class CurveGenerator {
 						}
 					}
 				}
-				int size = result.size()-1;
-				Result.add(result.get(0));
-				for(int i=0;i<size;i++)
-				{
-					ArrayList<Excel> coloredEx = LineGenerator.Brezenhem(result.get(i),result.get(i+1));
-					for(int j=0; j<coloredEx.size(); j++)
-					{
-						Result.add(coloredEx.get(j));
-					}
-				}
-				
-				Result.get(0).setColor(Color.red);
-				Result.get(Result.size()-1).setColor(Color.red);
+				result.add(ex1);
+				result.add(ex4);
+				/*result.get(0).setColor(Color.red);
+				result.get(result.size()-1).setColor(Color.red);*/
 			}
 		
-		return Result;
+		return result;
 	}
 
 	public static Matrix matrixMultiplication(Matrix A, Matrix B)
@@ -115,7 +111,43 @@ public class CurveGenerator {
 					" количеству строк 2ой !!!");
 		}
 		
-		//C.showMatrix();
 		return null;
+	}
+	
+	public static double getStep(Excel e1,Excel e2,Excel e3,Excel e4)
+	{
+		double step = 0;
+		
+		double max_size = 0;
+		
+		List<Excel> list = new LinkedList<Excel>();
+		list.add(e1);
+		list.add(e2);
+		list.add(e3);
+		list.add(e4);
+		
+		for(int i=0;i<list.size();i++)
+		{
+			if(i + 1 != list.size())
+			{
+				Excel point1 = list.get(i);
+				Excel point2 = list.get(i+1);
+				double current_max = Math.max(Math.abs((double)point2.getX()-(double)point1.getX() ), Math.abs( (double)point2.getY()-(double)point1.getY()));
+				
+				if(current_max > max_size)
+				{
+					max_size = current_max;
+				}
+			}
+		}
+		
+		step = (1.0/max_size)/3.0;
+		
+		return step;
+	}
+	
+	public static Point rVector(Excel Ex1,Excel Ex2)
+	{
+		 return new Point(Ex2.getX() - Ex1.getX(), Ex2.getY() - Ex1.getY());	
 	}
 }

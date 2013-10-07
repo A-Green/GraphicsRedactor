@@ -1,7 +1,12 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +25,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Checkbox;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseAdapter;
@@ -34,6 +40,7 @@ import java.awt.Component;
 import circle.*;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.image.MemoryImageSource;
 public class MWind extends JFrame {
 	
 	/**
@@ -128,6 +135,31 @@ public class MWind extends JFrame {
 			}
 		});
 		bottonPanel.add(stepCheckBox);
+		
+		//Ћастик, если выделено, то стираетс€ все, что отрисовано
+		final Checkbox clearCheckBox = new Checkbox("Eraser     ");
+		clearCheckBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				 if (arg0.getStateChange() == ItemEvent.DESELECTED)
+					 gridView.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				 if (arg0.getStateChange() == ItemEvent.SELECTED)
+				 {
+					 Toolkit tk = Toolkit.getDefaultToolkit();
+				     Dimension d = tk.getBestCursorSize(100, 100); // d Ч размер изображени€
+				     int w = d.width, h = d.height, k = 0;
+				     Point p = new Point(15, 15);                  // ‘окус курсора будет
+				     int[] pix = new int[w * h];                 // «десь будут пикселы изображени€ 
+				     for(int i = 0; i < w; i++) 
+				    	 for(int j = 0; j < h; j++)
+				    		 pix[k++] = 0xFFFFFFF0; 
+				     Image im = createImage(new MemoryImageSource(w, h, pix, 0, w)); 
+				     Cursor curs = tk.createCustomCursor(im, p, null);  
+				        
+					 gridView.setCursor(curs);
+				 }
+			}
+		});
+		bottonPanel.add(clearCheckBox);
 		
 		
 	//---------------------------------------ќ“–≈« »------------------------------------------------------------------
@@ -378,6 +410,33 @@ public class MWind extends JFrame {
 				}
 			}
 		});
+		
+		//передвижение мыши
+		 gridView.addMouseMotionListener(new MouseMotionListener(){
+
+				public void mouseDragged(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				public void mouseMoved(MouseEvent event) {
+					if (event.getX()<=grid.getSize()*grid.getStep() && event.getY()<=grid.getSize()*grid.getStep())
+					{
+						int x = event.getX() / grid.getStep();
+						int y = event.getY() / grid.getStep();
+						if (grid.getExcel(x, y).isColored() == true) 
+						{
+							if(clearCheckBox.getState() == true)
+							{
+								grid.getExcel(x, y).setColored(false);
+								gridView.repaint();
+								System.out.println("CLEAR");
+							}
+						}
+					}
+				}
+		    
+		    });
 		
 		
 		
