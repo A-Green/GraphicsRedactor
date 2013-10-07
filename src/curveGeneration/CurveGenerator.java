@@ -29,6 +29,9 @@ public class CurveGenerator {
 			int Rx4 = ex1.getX();
 			int Ry4 = ex1.getY();
 			
+			ex1.setColor(Color.red);
+			ex2.setColor(Color.red);
+			
 			Matrix Gnx = new Matrix(4,2);
 			double masGnx[] = {Px1,Py1,Px4,Py4,Rx1,Ry1,Rx4,Ry4};
 			Gnx.fillingMatrix(masGnx);
@@ -67,6 +70,7 @@ public class CurveGenerator {
 					}
 				}
 				int size = result.size()-1;
+				Result.add(result.get(0));
 				for(int i=0;i<size;i++)
 				{
 					ArrayList<Excel> coloredEx = LineGenerator.Brezenhem(result.get(i),result.get(i+1));
@@ -76,10 +80,8 @@ public class CurveGenerator {
 					}
 				}
 				
-				for(int i=0;i<Result.size()-1;i++)
-				{
-					Result.get(i).setColor(Color.LIGHT_GRAY);
-				}
+				Result.get(0).setColor(Color.red);
+				Result.get(Result.size()-1).setColor(Color.red);
 			}
 		
 		return Result;
@@ -109,7 +111,7 @@ public class CurveGenerator {
 		}
 		else
 		{
-			System.out.println("Количество столбцов 1ой матрицы должна быть ровна" +
+			System.out.println("Количество столбцов 1ой матрицы должна быть равно" +
 					" количеству строк 2ой !!!");
 		}
 		
