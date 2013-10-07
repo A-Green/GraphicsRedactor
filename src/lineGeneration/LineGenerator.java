@@ -1,106 +1,98 @@
 package lineGeneration;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.util.ArrayList;
-
 import model.Excel;
-import model.Grid;
 
 public class LineGenerator {
 	
-	public static ArrayList<Excel> DDA(Grid g)
+	public static ArrayList<Excel> DDA(Excel ex1, Excel ex2)
 	{
-		ArrayList<Excel> result = new ArrayList<Excel>();
-		
 		System.out.println("ЦДА");
-		int count = 0;
-		Point p1 = new Point();
-		Point p2 = new Point();
-		int mas[] = { 0, 0, 0, 0 };
-		int n = 0;
-		for (int i = 0; i < g.getSize(); i++) {
-			for (int j = 0; j < g.getSize(); j++) {
-				if (g.getExcel(i, j).isColored() == true) {
-					if (n < 4) {
-						mas[n] = i;// *g.getStep();
-						n++;
-						mas[n] = j;// *g.getStep();
-						n++;
-					}
-					count++;
-				}
-			}
-		}
-
-		if (count != 2) return null;
-			else {
-			
-			p1.x = mas[0]; 
-			p1.y = mas[1];
-			p2.x = mas[2];
-			p2.y = mas[3];
-			
+		ArrayList<Excel> result = new ArrayList<Excel>();
+		if (ex1 == null || ex2 == null) return null;
+		
+		int x2 = ex1.getX();
+		int y2 = ex1.getY();
+		int x1 = ex2.getX();
+		int y1 = ex2.getY();
 			
 			int length;
-			int modx = (int) (p2.getX() - p1.getX());
+			int modx = (int) (x2 - x1); // Вычиляем разность координат точек по оси Х
 			
 			if (modx < 0) {
-				modx = modx * (-1);
+				modx = modx * (-1); // Если разность отрицательна, то делаем её положительной
 			}
 			
-			int mody = (int) (p2.getY() - p1.getY());
+			int mody = (int) (y2 - y1); // Вычиляем разность координат точек по оси У
 			
 			if (mody < 0) {
-				mody = mody * (-1);
+				mody = mody * (-1); // Если разность отрицательна, то делаем её положительной
 			}
 			
-			if (modx >= mody) {
+			if (modx >= mody) { // вычисляем длину прямой, как большее из разностей
 				length = modx;
 			} else {
 				length = mody;
 			}
+		
+			if (mody == 0) return horizontalLine(x1, x2, y1); // частный случай - горизонтальная линия
+			if (modx == 0) return verticalalLine(y1, y2, x1); // частный случай - вертикальная линия
+			if (Math.abs(modx) == Math.abs(mody)) return diagonalLine(x1, y1, x2, y2); // частный случай - диагональная линия 
 			
-			if (mody == 0) return horizontalLine(p1.x, p2.x, p1.y);
-			if (modx == 0) return verticalalLine(p1.y, p2.y, p1.x);
-			if (Math.abs(modx) == Math.abs(mody)) return diagonalLine(p1.x, p1.y, p2.x, p2.y);
+			double dx = (x2 - x1) /(double) length; //вычисление приращения по оси Х
+			double dy = (y2 - y1) /(double) length; //вычисление приращения по оси У
 			
-			double dx = (p2.getX() - p1.getX()) / length;
-			double dy = (p2.getY() - p1.getY()) / length;
+			int signx = Sign(dx); //Ф-ия возвращающая -1, 0 , 1 относительно знака приращения
+			int signy = Sign(dy); //Ф-ия возвращающая -1, 0 , 1 относительно знака приращения
 			
-			int signx = Sign(dx);
-			int signy = Sign(dy);
+			double x = x1 + 0.5 * signx; // округление величины
+			double y = y1 + 0.5 * signy; // округление величины
 			
-			double x = p1.getX() + 0.5 * signx;
-			double y = p1.getY() + 0.5 * signy;
-			
-			if(dx>=0 && dy>=0)
+			if(dx>=0 && dy>=0) // положительные приращения по обоим осям
 			{
-				g.getExcel((int) x, (int) y).setColored(true); 
 				int i = 0;
-				while (i < length) {
+				while (i < length) { // основной цикл генерации отрезка
 				x = x + dx;
 				y = y + dy;				
 				result.add(new Excel((int) x,(int) y, Color.black));
 				i++;
 				}
 			}
-			else
+			if(dx>0 && dy<0) // одно приращение отрицательно
 			{
-				g.getExcel((int) x, (int) y + 1).setColored(true); 
 				int i = 0;
-				while (i < length) {
+				while (i < length-1) { // основной цикл генерации отрезка
 				x = x + dx;
 				y = y + dy;				
 				result.add(new Excel((int) x,(int) y + 1, Color.black));
 				i++;
+				}
 			}
+			if(dx<0 && dy>0) // одно приращение отрицательно
+			{
+				int i = 0;
+				while (i < length-1) { // основной цикл генерации отрезка
+				x = x + dx;
+				y = y + dy;				
+				result.add(new Excel((int) x + 1,(int) y, Color.black));
+				i++;
+				}
 			}
-
-		}
-		
+			if(dx<0 && dy<0) // оба приращения отрицательны
+			{
+				int i = 0;
+				while (i < length-1) { // основной цикл генерации отрезка
+				x = x + dx;
+				y = y + dy;				
+				result.add(new Excel((int) x + 1,(int) y + 1, Color.black));
+				i++;
+				}
+			}
+			
 		return result;		
 	}
+
 	
 	public static ArrayList<Excel> Brezenhem(Excel ex1, Excel ex2)
 	{
