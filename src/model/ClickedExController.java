@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 public class ClickedExController {
-	
+	// ликнутые €чейки
 	private ArrayList<Excel> exes = new ArrayList<Excel>();
-	
+	//возвращает последнюю €чейку массива и удал€ет еЄ из него
 	private Excel popExcel()
 	{
 		Excel ex = null;
@@ -16,29 +16,29 @@ public class ClickedExController {
 		}
 		return ex;
 	}
-	
+	//получить €чейку
 	public Excel getExcel()
 	{
 		return popExcel();
 	}
-	
+	//удал€ет, если есть така€ €чейка
 	public void removeExcel(Excel ex)
 	{
 		for (Excel e: exes)
 		{
 			if (e.getX() == ex.getX() && e.getY() == ex.getY())
 				{
-				exes.remove(ex);
+				exes.remove(e);
 				break;
 				}
 		}
 	}
-	
+	//добавл€ет новую €чейку
 	public void addExcel(Excel ex)
 	{
 		exes.add(ex);
 	}
-	
+	//очищает массив клиунтых
 	public void clear()
 	{
 		exes.clear();

@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -49,7 +50,6 @@ public class MWind extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Grid grid = new Grid(300);
 	private RadiusDialog dialog = null;
 	private PDialog p_dialog = null;
 
@@ -76,7 +76,7 @@ public class MWind extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 507, 485);
 		// сетка
-		final GridView gridView = new GridView(grid);
+		final GridView gridView = new GridView();
 		// верхнее меню
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -104,15 +104,13 @@ public class MWind extends JFrame {
 		});
 		bottonPanel.add(stepBotton);
 		
-		
 		JButton zoomOutBotton = new JButton("  -  ");
 		// уменьшение масштаба по нажатию кнопки '-'
 		zoomOutBotton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (grid.getStep() > 2) {
-					grid.setStep(grid.getStep() - 2);
-					gridView.repaint();
-				}
+				gridView.setStep(gridView.getStep() - 1);	
+				gridView.repaint();
+				
 			}
 		});
 		
@@ -123,7 +121,7 @@ public class MWind extends JFrame {
 		bottonPanel.add(zoomInBotton);
 		zoomInBotton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				grid.setStep(grid.getStep() + 3);
+				gridView.setStep(gridView.getStep() + 1);
 				gridView.repaint();
 			}
 		});
@@ -177,7 +175,7 @@ public class MWind extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				
-				ArrayList<Excel> coloredEx = LineGenerator.DDA(grid.getClickedEx(), grid.getClickedEx());	
+				ArrayList<Excel> coloredEx = LineGenerator.DDA(gridView.getClickedEx(), gridView.getClickedEx());	
 				if (coloredEx == null)
 				{
 					JOptionPane.showMessageDialog(new JButton(),
@@ -205,7 +203,7 @@ public class MWind extends JFrame {
 		itemBrezenh.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				ArrayList<Excel> coloredEx = LineGenerator.Brezenhem(grid.getClickedEx(), grid.getClickedEx());
+				ArrayList<Excel> coloredEx = LineGenerator.Brezenhem(gridView.getClickedEx(), gridView.getClickedEx());
 				
 				if (coloredEx == null)
 				{
@@ -236,7 +234,7 @@ public class MWind extends JFrame {
 		itemAntiAliasing.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				ArrayList<Excel> coloredEx = LineGenerator.WuAlgorithm(grid.getClickedEx(), grid.getClickedEx());
+				ArrayList<Excel> coloredEx = LineGenerator.WuAlgorithm(gridView.getClickedEx(), gridView.getClickedEx());
 				
 				if (coloredEx == null)
 				{
@@ -289,7 +287,7 @@ public class MWind extends JFrame {
 				
 				if(radius != -1)
 				{
-					ArrayList<Excel> coloredEx = CircleGenerator.circle(grid.getClickedEx(),radius);
+					ArrayList<Excel> coloredEx = CircleGenerator.circle(gridView.getClickedEx(),radius);
 					if(coloredEx == null) 
 						{
 						JOptionPane.showMessageDialog(new JButton(),
@@ -332,7 +330,7 @@ public class MWind extends JFrame {
 
 						if (p_value != 0) {
 							ArrayList<Excel> coloredEx = ParabolaGenerator.parabola(
-									grid.getClickedEx(), p_value, grid.getSize());
+									gridView.getClickedEx(), p_value, gridView.getH());
 							if (coloredEx == null) {
 								JOptionPane.showMessageDialog(new JButton(),
 										"”кажите вершину параболы!", "»нформаци€",
@@ -368,7 +366,8 @@ public class MWind extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				ArrayList<Excel> coloredEx = CurveGenerator.ErmitForm(grid.getClickedEx(), grid.getClickedEx(),grid.getClickedEx(),grid.getClickedEx());
+				ArrayList<Excel> coloredEx = CurveGenerator.ErmitForm(
+						gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
 
 				if (coloredEx == null)
 				{
@@ -406,8 +405,7 @@ public class MWind extends JFrame {
 		popupClear.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				grid.clear();
-				gridView.clearStepArray();
+				gridView.clear();
 				gridView.repaint();
 			}
 		});
@@ -417,12 +415,11 @@ public class MWind extends JFrame {
 		// масштабирование по колесику мыши
 		gridView.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				
-				
+			
 				if(arg0.getWheelRotation() < 0)
-					grid.setStep(grid.getStep() + 2);
-				else if (grid.getStep() > 1) 
-					grid.setStep(grid.getStep() - 1);	
+					gridView.setStep(gridView.getStep() + 1);
+				else 
+					gridView.setStep(gridView.getStep() - 1);	
 			gridView.repaint();
 
 			}
@@ -432,22 +429,17 @@ public class MWind extends JFrame {
 		gridView.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {				
 				// если левой клавишей и координаты точки не превышают размер сетки - рисуем пиксель
-				if (SwingUtilities.isLeftMouseButton(event) 
-						&& event.getX()<=grid.getSize()*grid.getStep()
-							&& event.getY()<=grid.getSize()*grid.getStep()){
-					int x = event.getX() / grid.getStep();
-					int y = event.getY() / grid.getStep();
-					if (grid.getExcel(x, y).isColored() == false) {
-						grid.getExcel(x, y).setColored(true);
-						
-						grid.addClickedEx(grid.getExcel(x, y));
-						
+				if (SwingUtilities.isLeftMouseButton(event)){
+					int x = event.getX() / gridView.getStep();
+					int y = event.getY() / gridView.getStep();
+					Excel ex = new Excel (x, y, Color.black);
+					
+					if (gridView.contains(ex)) 
+						gridView.removeEx(ex);
+					 else 
+						gridView.addEx(ex);
 						gridView.repaint();
-					} else {
-						grid.getExcel(x, y).setColored(false);
-						grid.removeClickedEx(grid.getExcel(x, y));
-						gridView.repaint();
-					}
+					
 				}
 			}
 		});
@@ -459,24 +451,20 @@ public class MWind extends JFrame {
 					// TODO Auto-generated method stub
 					
 				}
-
 				public void mouseMoved(MouseEvent event) {
-					if (event.getX()<=grid.getSize()*grid.getStep() && event.getY()<=grid.getSize()*grid.getStep())
-					{
-						int x = event.getX() / grid.getStep();
-						int y = event.getY() / grid.getStep();
-						if (grid.getExcel(x, y).isColored() == true) 
+						int x = event.getX() / gridView.getStep();
+						int y = event.getY() / gridView.getStep();
+						Excel ex = new Excel(x,y,Color.black);
+						if (gridView.contains(ex)) 
 						{
 							if(clearCheckBox.getState() == true)
 							{
-								grid.getExcel(x, y).setColored(false);
+								gridView.removeEx(ex);
 								gridView.repaint();
 								System.out.println("CLEAR");
 							}
 						}
-					}
-				}
-		    
+					}	    
 		    });
 		
 		
