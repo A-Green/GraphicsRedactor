@@ -20,6 +20,7 @@ public class ParabolaGenerator {
 			int vertX, vertY, diagX, diagY, horX, horY;
 			double verticalError, horizontalError, diagonalError;
 			
+			result.add(new Excel(ex.getX(), ex.getY(), Color.black));
 			while(y<size && y>0) {
 			
 			if(p>0) {
@@ -75,7 +76,6 @@ public class ParabolaGenerator {
 			}
 
 			}
-			
 			return result;
 		}
 		

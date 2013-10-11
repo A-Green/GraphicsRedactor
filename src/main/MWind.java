@@ -23,6 +23,7 @@ import lineGeneration.LineGenerator;
 import model.*;
 import view.*;
 import parabola.*;
+import line.*;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -52,6 +53,9 @@ public class MWind extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private RadiusDialog dialog = null;
 	private PDialog p_dialog = null;
+	private int clickedX = 0;
+	private int clickedY = 0;
+
 
 	/**
 	 * Launch the application.
@@ -77,6 +81,8 @@ public class MWind extends JFrame {
 		setBounds(100, 100, 507, 485);
 		// сетка
 		final GridView gridView = new GridView();
+		final int ClickedX;
+		final int ClickedY;
 		// верхнее меню
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -175,24 +181,19 @@ public class MWind extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				
-				ArrayList<Excel> coloredEx = LineGenerator.DDA(gridView.getClickedEx(), gridView.getClickedEx());	
-				if (coloredEx == null)
-				{
+				DDALine DDA = new DDALine(gridView.getClickedEx(), gridView.getClickedEx());
+				
+				if (DDA.getColoredExes() == null)
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 2 точки!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
-				}
-				else
-				{		if (stepCheckBox.getState() == false)
+				else 
+				{
+						if (stepCheckBox.getState() == false)
 						{
-							gridView.drawDots(coloredEx);
+							gridView.addLine(DDA);
 							gridView.repaint();	
 						}
-						else 
-						{
-							gridView.setSteplyArray(coloredEx);
-						}
-					
 				}
 			}
 		});
@@ -203,9 +204,10 @@ public class MWind extends JFrame {
 		itemBrezenh.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				ArrayList<Excel> coloredEx = LineGenerator.Brezenhem(gridView.getClickedEx(), gridView.getClickedEx());
 				
-				if (coloredEx == null)
+				BrezenhemLine  BLine= new BrezenhemLine(gridView.getClickedEx(), gridView.getClickedEx());
+				
+				if (BLine.getColoredExes() == null)
 				{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 2 точки!", "Информация",
@@ -215,13 +217,9 @@ public class MWind extends JFrame {
 				{					
 					if(stepCheckBox.getState() == false)
 					{
-						gridView.drawDots(coloredEx);
+						gridView.addLine(BLine);
 						gridView.repaint();
 
-					}
-					else
-					{
-						gridView.setSteplyArray(coloredEx);
 					}
 					
 				}
@@ -234,9 +232,10 @@ public class MWind extends JFrame {
 		itemAntiAliasing.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				ArrayList<Excel> coloredEx = LineGenerator.WuAlgorithm(gridView.getClickedEx(), gridView.getClickedEx());
 				
-				if (coloredEx == null)
+				AntiAliasingLine AAL = new AntiAliasingLine(gridView.getClickedEx(), gridView.getClickedEx());
+				
+				if (AAL.getColoredExes() == null)
 				{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 2 точки!", "Информация",
@@ -246,14 +245,11 @@ public class MWind extends JFrame {
 				{
 					if(stepCheckBox.getState() == false)
 					{
-						gridView.drawDots(coloredEx);
+						gridView.addLine(AAL);
 						gridView.repaint();
 
 					}
-					else 
-					{
-						gridView.setSteplyArray(coloredEx);
-					}
+
 				}
 			}
 		});
@@ -287,8 +283,8 @@ public class MWind extends JFrame {
 				
 				if(radius != -1)
 				{
-					ArrayList<Excel> coloredEx = CircleGenerator.circle(gridView.getClickedEx(),radius);
-					if(coloredEx == null) 
+					Circle circle = new Circle(gridView.getClickedEx(), radius);
+					if(circle.getColoredExes() == null) 
 						{
 						JOptionPane.showMessageDialog(new JButton(),
 							"Укажите центр окружности!", "Информация",
@@ -298,13 +294,10 @@ public class MWind extends JFrame {
 					{	
 						if(stepCheckBox.getState() == false)
 						{
-							gridView.drawDots(coloredEx);
+							gridView.addLine(circle);
 							gridView.repaint();
 						}
-						else
-						{
-							gridView.setSteplyArray(coloredEx);
-						}
+
 					}
 				}
 				
@@ -329,19 +322,16 @@ public class MWind extends JFrame {
 						}
 
 						if (p_value != 0) {
-							ArrayList<Excel> coloredEx = ParabolaGenerator.parabola(
-									gridView.getClickedEx(), p_value, gridView.getH());
-							if (coloredEx == null) {
+							Parabola parabola = new Parabola(gridView.getClickedEx(), p_value, gridView.getH());
+							if (parabola.getColoredExes() == null) {
 								JOptionPane.showMessageDialog(new JButton(),
 										"Укажите вершину параболы!", "Информация",
 										JOptionPane.WARNING_MESSAGE);
 							} else {
 								if (stepCheckBox.getState() == false) {
-									gridView.drawDots(coloredEx);
+									gridView.addLine(parabola);
 									gridView.repaint();
-								} else {
-									gridView.setSteplyArray(coloredEx);
-								}
+								} 
 							}
 						}
 
@@ -366,10 +356,10 @@ public class MWind extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				ArrayList<Excel> coloredEx = CurveGenerator.ErmitForm(
+				ErmitForm ermit = new ErmitForm(
 						gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
 
-				if (coloredEx == null)
+				if (ermit.getColoredExes() == null)
 				{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 4 точки!", "Информация",
@@ -379,12 +369,8 @@ public class MWind extends JFrame {
 				{					
 					if(stepCheckBox.getState() == false)
 					{
-						gridView.drawDots(coloredEx);
+						gridView.addLine(ermit);
 						gridView.repaint();
-					}
-					else
-					{
-						gridView.setSteplyArray(coloredEx);
 					}
 					
 				}
@@ -428,7 +414,7 @@ public class MWind extends JFrame {
 		// Щелчок мыши по сетке
 		gridView.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {				
-				// если левой клавишей и координаты точки не превышают размер сетки - рисуем пиксель
+				// если левой клавишей 
 				if (SwingUtilities.isLeftMouseButton(event)){
 					int x = event.getX() / gridView.getStep();
 					int y = event.getY() / gridView.getStep();
@@ -438,17 +424,31 @@ public class MWind extends JFrame {
 						gridView.removeEx(ex);
 					 else 
 						gridView.addEx(ex);
-						gridView.repaint();
+						
+					gridView.repaint();
 					
 				}
 			}
+			
+			 public void mousePressed(MouseEvent e) {
+				 	clickedX = e.getX() / gridView.getStep();
+				 	clickedY = e.getY() / gridView.getStep();
+			    }
+
 		});
 		
 		//передвижение мыши
 		 gridView.addMouseMotionListener(new MouseMotionListener(){
-
 				public void mouseDragged(MouseEvent e) {
 					// TODO Auto-generated method stub
+					//x = 10;
+					int x = e.getX() / gridView.getStep();
+					int y = e.getY() / gridView.getStep();
+					//if ( x != clickedX && y != clickedY )
+					gridView.moveLine(clickedX, clickedY, x, y);
+					clickedX = x; 
+					clickedY = y;
+					gridView.repaint();
 					
 				}
 				public void mouseMoved(MouseEvent event) {
@@ -478,6 +478,7 @@ public class MWind extends JFrame {
 				if (e.isPopupTrigger()) {
 					showMenu(e);
 				}
+
 			}
 			public void mouseReleased(MouseEvent e) {
 				if (e.isPopupTrigger()) {

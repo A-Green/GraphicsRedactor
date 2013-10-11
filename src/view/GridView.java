@@ -8,6 +8,7 @@ import java.awt.Polygon;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
+import line.AbstractLine;
 import model.*;
 import javax.swing.JPanel;
 
@@ -29,6 +30,9 @@ public class GridView extends JPanel{
 	double w;
 	//¬ысота экрана
 	double h;
+	//
+	private ArrayList<AbstractLine> lines;
+
 	
 	public GridView()
 	{
@@ -43,6 +47,7 @@ public class GridView extends JPanel{
 	    coloredEx = new ArrayList<Excel>();
 	    steplyArray = new ArrayList<Excel>();
 	    ClickedController = new ClickedExController();
+	    lines = new ArrayList<AbstractLine>();
 	}
 		
 	  protected void paintComponent(Graphics g) {
@@ -82,8 +87,8 @@ public class GridView extends JPanel{
 		        	y2 +=step;
 		        	i++;
 	         }
-	         //ќтрисовка €чеек
-	         for(Excel ex: coloredEx)
+	         //ќтрисовка кликнутых €чеек
+	         for(Excel ex: ClickedController.getClickedExes())
 	         {
 	        	 if (ex.isColored())
 	        	 {    		 
@@ -92,6 +97,22 @@ public class GridView extends JPanel{
 	        		 g2d.setColor(ex.getColor());
 	        		 g2d.fillPolygon(x,y,4);
 	        	 }
+	         }
+	         
+	         for (AbstractLine line: lines)
+	         {
+	        	 ArrayList<Excel>colored = line.getColoredExes();
+	        	 
+	        	 for(Excel ex: colored)
+		         {
+		        	 if (ex.isColored())
+		        	 {    		 
+		        		 int x[] = {ex.getX() * step + step,ex.getX() * step ,ex.getX() * step,ex.getX()* step + step};
+		        		 int y[] = {ex.getY()* step,ex.getY()* step,ex.getY()* step + step,ex.getY()* step + step};
+		        		 g2d.setColor(ex.getColor());
+		        		 g2d.fillPolygon(x,y,4);
+		        	 }
+		         }
 	         }
 
 	
@@ -172,7 +193,6 @@ public class GridView extends JPanel{
 	  {
 		  if (ex.getX() >= 0 && ex.getY() >= 0)
 		  {
-			  coloredEx.add(ex);
 			  ClickedController.addExcel(ex);
 		  }
 		  		 
@@ -183,6 +203,7 @@ public class GridView extends JPanel{
 		  coloredEx.clear();
 		  steplyArray.clear();
 		  ClickedController.clear();
+		  lines.clear();
 	  } 
 	  
 	  public Excel getClickedEx()
@@ -198,5 +219,22 @@ public class GridView extends JPanel{
 	  {
 		  return (int) w;
 	  }
+	  
+	  public void moveLine(int x1, int y1, int x2, int y2)
+	  {
+		  Excel begin = new Excel(x1,y1);
+		  Excel end = new Excel(x2, y2);
+		  
+		  for(AbstractLine line: lines)
+		  {
+			  line.move(begin, end);
+		  }
+	  }
+	  
+	  public void addLine(AbstractLine line)
+	  {
+		  lines.add(line);
+	  }
+	  
 
 }

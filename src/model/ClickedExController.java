@@ -43,5 +43,10 @@ public class ClickedExController {
 	{
 		exes.clear();
 	}
+	
+	public ArrayList<Excel> getClickedExes()
+	{
+		return exes;
+	}
 
 }
