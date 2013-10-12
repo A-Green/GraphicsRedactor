@@ -30,7 +30,7 @@ public class GridView extends JPanel{
 	double w;
 	//Высота экрана
 	double h;
-	//
+	//Массив линий
 	private ArrayList<AbstractLine> lines;
 
 	
@@ -98,7 +98,18 @@ public class GridView extends JPanel{
 	        		 g2d.fillPolygon(x,y,4);
 	        	 }
 	         }
-	         
+	         //Отрисовка дополнительных закрашенных ячеек
+	         for(Excel ex: coloredEx)
+	         {
+	        	 if (ex.isColored())
+	        	 {    		 
+	        		 int x[] = {ex.getX() * step + step,ex.getX() * step ,ex.getX() * step,ex.getX()* step + step};
+	        		 int y[] = {ex.getY()* step,ex.getY()* step,ex.getY()* step + step,ex.getY()* step + step};
+	        		 g2d.setColor(ex.getColor());
+	        		 g2d.fillPolygon(x,y,4);
+	        	 }
+	         }
+	        //Отрисовка фигур 
 	         for (AbstractLine line: lines)
 	         {
 	        	 ArrayList<Excel>colored = line.getColoredExes();
@@ -117,18 +128,11 @@ public class GridView extends JPanel{
 
 	
 	    }
-	  // отрисовывает сразу все точки
-	  public void drawDots(ArrayList<Excel> exs)
-	  {
-		  for (Excel ex: exs)
-		  {
-			  if (ex.getX() >= 0 && ex.getY() >= 0)
-				  coloredEx.add(ex);
-		  }
-	  }
+
 	  //Заполняет массив пошаговой отрисовки
-	  public void setSteplyArray(ArrayList<Excel> arr)
+	  public void setSteplyArray(AbstractLine line)
 	  {
+		  ArrayList<Excel> arr = line.getColoredExes();
 		  for (Excel ex: arr)
 		  {
 			  if (ex.getX() < 0 && ex.getY() < 0)
@@ -172,6 +176,13 @@ public class GridView extends JPanel{
 			  if (e.getX() == ex.getX() && e.getY() == ex.getY())
 				  return true;
 		  }
+		  
+		  for (Excel e: ClickedController.getClickedExes())
+		  {
+			  if (e.getX() == ex.getX() && e.getY() == ex.getY())
+				  return true;
+		  }
+		  
 		  return false;
 	  }
 	  //удаляет ячейку из массива закрашенных ячеек, а также из контроллера кликнутых

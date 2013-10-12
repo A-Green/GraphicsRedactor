@@ -132,6 +132,9 @@ public class LineGenerator {
 			dx = Math.abs(dx); //далее мы будем сравнивать: "if (dx < dy)"
 			dy = Math.abs(dy); //поэтому необходимо сделать dx = |dx|; dy = |dy|
 			
+			result.add(new Excel(ex1.getX(), ex1.getY(), Color.black));
+			result.add(new Excel(ex2.getX(), ex2.getY(), Color.black));
+			
 			if(dx > dy)			//определяем наклон отрезка:
 			{
 				/*

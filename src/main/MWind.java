@@ -189,11 +189,12 @@ public class MWind extends JFrame {
 							JOptionPane.WARNING_MESSAGE);
 				else 
 				{
-						if (stepCheckBox.getState() == false)
-						{
+						if (stepCheckBox.getState() == false)						
 							gridView.addLine(DDA);
-							gridView.repaint();	
-						}
+						else
+							gridView.setSteplyArray(DDA);
+						
+						gridView.repaint();
 				}
 			}
 		});
@@ -208,20 +209,18 @@ public class MWind extends JFrame {
 				BrezenhemLine  BLine= new BrezenhemLine(gridView.getClickedEx(), gridView.getClickedEx());
 				
 				if (BLine.getColoredExes() == null)
-				{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 2 точки!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
-				}
+				
 				else
 				{					
 					if(stepCheckBox.getState() == false)
-					{
 						gridView.addLine(BLine);
-						gridView.repaint();
-
-					}
+					else
+						gridView.setSteplyArray(BLine);
 					
+						gridView.repaint();				
 				}
 			}
 		});
@@ -235,21 +234,19 @@ public class MWind extends JFrame {
 				
 				AntiAliasingLine AAL = new AntiAliasingLine(gridView.getClickedEx(), gridView.getClickedEx());
 				
-				if (AAL.getColoredExes() == null)
-				{
+				if (AAL.getColoredExes() == null)			
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 2 точки!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
-				}
+				
 				else
 				{
-					if(stepCheckBox.getState() == false)
-					{
+					if(stepCheckBox.getState() == false)		
 						gridView.addLine(AAL);
+					else
+						gridView.setSteplyArray(AAL);
+					
 						gridView.repaint();
-
-					}
-
 				}
 			}
 		});
@@ -284,20 +281,20 @@ public class MWind extends JFrame {
 				if(radius != -1)
 				{
 					Circle circle = new Circle(gridView.getClickedEx(), radius);
-					if(circle.getColoredExes() == null) 
-						{
+					
+					if(circle.getColoredExes() == null) 				
 						JOptionPane.showMessageDialog(new JButton(),
 							"Укажите центр окружности!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
-						}
+						
 					else 
 					{	
 						if(stepCheckBox.getState() == false)
-						{
 							gridView.addLine(circle);
-							gridView.repaint();
-						}
-
+						else
+							gridView.setSteplyArray(circle);
+							
+						gridView.repaint();
 					}
 				}
 				
@@ -323,15 +320,17 @@ public class MWind extends JFrame {
 
 						if (p_value != 0) {
 							Parabola parabola = new Parabola(gridView.getClickedEx(), p_value, gridView.getH());
-							if (parabola.getColoredExes() == null) {
+							if (parabola.getColoredExes() == null) 
 								JOptionPane.showMessageDialog(new JButton(),
 										"Укажите вершину параболы!", "Информация",
 										JOptionPane.WARNING_MESSAGE);
-							} else {
-								if (stepCheckBox.getState() == false) {
+							else {
+								if (stepCheckBox.getState() == false)
 									gridView.addLine(parabola);
+								else
+									gridView.setSteplyArray(parabola);
 									gridView.repaint();
-								} 
+								
 							}
 						}
 
@@ -360,19 +359,18 @@ public class MWind extends JFrame {
 						gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
 
 				if (ermit.getColoredExes() == null)
-				{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 4 точки!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
-				}
+				
 				else
 				{					
 					if(stepCheckBox.getState() == false)
-					{
 						gridView.addLine(ermit);
-						gridView.repaint();
-					}
+					else
+						gridView.setSteplyArray(ermit);
 					
+					gridView.repaint();				
 				}
 			}
 			
@@ -421,7 +419,9 @@ public class MWind extends JFrame {
 					Excel ex = new Excel (x, y, Color.black);
 					
 					if (gridView.contains(ex)) 
+						{ System.out.println("asdads");
 						gridView.removeEx(ex);
+						}
 					 else 
 						gridView.addEx(ex);
 						

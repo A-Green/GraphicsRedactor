@@ -36,6 +36,8 @@ public class CurveGenerator {
 			
 			result.add(new Excel (ex3.getX(), ex3.getY(), Color.red));
 			result.add(new Excel (ex2.getX(), ex2.getY(), Color.red));
+			result.add(new Excel (ex1.getX(), ex1.getY(), Color.red));
+			result.add(new Excel (ex4.getX(), ex4.getY(), Color.red));
 			
 			Matrix Gnx = new Matrix(4,2);
 			double masGnx[] = {Px1,Py1,Px4,Py4,r1.getX(),r1.getY(),r4.getX(),r4.getY()};
