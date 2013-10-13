@@ -20,7 +20,7 @@ public class ParabolaGenerator {
 			int vertX, vertY, diagX, diagY, horX, horY;
 			double verticalError, horizontalError, diagonalError;
 			
-			while(y<size && y>0) {
+			while(y<size && y>=0) {
 			
 			if(p>0) {
 			vertX = x;
@@ -39,9 +39,13 @@ public class ParabolaGenerator {
 			horY = y;
 			}
 			
-			verticalError = 2 * p * Math.pow((vertX - x0), 2 ) + y0 - vertY;
+			/*verticalError = 2 * p * Math.pow((vertX - x0), 2 ) + y0 - vertY;
 			horizontalError = 2 * p * Math.pow((horX - x0), 2 ) + y0 - horY;;
 			diagonalError = 2 * p * Math.pow((diagX - x0), 2 ) + y0 - diagY;
+			*/
+			verticalError = Math.pow((vertX - x0), 2 )/(2*p) + y0 - vertY;
+			horizontalError = Math.pow((horX - x0), 2 )/(2*p) + y0 - horY;;
+			diagonalError = Math.pow((diagX - x0), 2 )/(2*p) + y0 - diagY;
 			
 			if(verticalError<0)
 				verticalError = verticalError*(-1);
@@ -50,8 +54,12 @@ public class ParabolaGenerator {
 			if(diagonalError<0)
 				diagonalError = diagonalError*(-1);
 			
+			System.out.println("vEr:"+verticalError);
+			System.out.println("hEr:"+horizontalError);
+			System.out.println("dEr:"+diagonalError);
+			
 			if(verticalError<horizontalError && verticalError<diagonalError) {
-				//System.out.println("ChooseVert");
+				System.out.println("ChooseVert");
 				result.add(new Excel( vertX , vertY, Color.black ));
 				result.add(new Excel( (x0+(x0-vertX)) , vertY, Color.black ));
 				x = vertX;
@@ -59,7 +67,7 @@ public class ParabolaGenerator {
 			}
 			
 			if(horizontalError<verticalError && horizontalError<diagonalError) {
-				//System.out.println("ChooseHor");
+				System.out.println("ChooseHor");
 				result.add(new Excel( horX , horY, Color.black ));
 				result.add(new Excel( (x0+(x0-horX)) , horY, Color.black ));
 				x = horX;
@@ -67,7 +75,7 @@ public class ParabolaGenerator {
 			}
 			
 			if(diagonalError<=verticalError && diagonalError<=horizontalError) {
-				//System.out.println("ChooseDiag");
+				System.out.println("ChooseDiag");
 				result.add(new Excel( diagX , diagY, Color.black ));
 				result.add(new Excel( (x0+(x0-diagX)) , diagY, Color.black ));
 				x = diagX;

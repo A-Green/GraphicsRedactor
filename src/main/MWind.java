@@ -36,7 +36,9 @@ import java.util.ArrayList;
 
 import javax.swing.JPopupMenu;
 
-import curveGeneration.CurveGenerator;
+import curveGeneration.BesieCurve;
+import curveGeneration.ErmitCurve;
+import curveGeneration.ParametricCurve;
 
 import java.awt.Component;
 import circle.*;
@@ -152,8 +154,8 @@ public class MWind extends JFrame {
 				     int w = d.width, h = d.height, k = 0;
 				     Point p = new Point(15, 15);                  // Фокус курсора будет
 				     int[] pix = new int[w * h];                 // Здесь будут пикселы изображения 
-				     for(int i = 0; i < w; i++) 
-				    	 for(int j = 0; j < h; j++)
+				     for(int i = 8; i < w; i++) 
+				    	 for(int j = 8; j < h; j++)
 				    		 pix[k++] = 0xFFFFFFF0; 
 				     Image im = createImage(new MemoryImageSource(w, h, pix, 0, w)); 
 				     Cursor curs = tk.createCustomCursor(im, p, null);  
@@ -368,7 +370,8 @@ public class MWind extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				ArrayList<Excel> coloredEx = CurveGenerator.ErmitForm(grid.getClickedEx(), grid.getClickedEx(),grid.getClickedEx(),grid.getClickedEx());
+				ParametricCurve pErmit = new ErmitCurve(grid.getClickedEx(), grid.getClickedEx(),grid.getClickedEx(),grid.getClickedEx());
+				ArrayList<Excel> coloredEx = pErmit.Calculation();
 
 				if (coloredEx == null)
 				{
@@ -393,6 +396,40 @@ public class MWind extends JFrame {
 			
 		});
 		curveMenu.add(ermitaItem);
+		
+		
+		//Безье
+				JMenuItem besieItem = new JMenuItem("форма Безье");
+				besieItem.addMouseListener(new MouseAdapter(){
+					@Override
+					public void mousePressed(MouseEvent e)
+					{
+						ParametricCurve pBesie = new BesieCurve(grid.getClickedEx(), grid.getClickedEx(),grid.getClickedEx(),grid.getClickedEx());
+						ArrayList<Excel> coloredEx = pBesie.Calculation();
+
+						if (coloredEx == null)
+						{
+							JOptionPane.showMessageDialog(new JButton(),
+									"Выберите 4 точки!", "Информация",
+									JOptionPane.WARNING_MESSAGE);
+						}
+						else
+						{					
+							if(stepCheckBox.getState() == false)
+							{
+								gridView.drawDots(coloredEx);
+								gridView.repaint();
+							}
+							else
+							{
+								gridView.setSteplyArray(coloredEx);
+							}
+							
+						}
+					}
+					
+				});
+				curveMenu.add(besieItem);
 		
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	
@@ -461,19 +498,21 @@ public class MWind extends JFrame {
 				}
 
 				public void mouseMoved(MouseEvent event) {
-					if (event.getX()<=grid.getSize()*grid.getStep() && event.getY()<=grid.getSize()*grid.getStep())
+					if(clearCheckBox.getState() == true)
 					{
+					if (event.getX()<grid.getSize()*grid.getStep() && event.getY()<grid.getSize()*grid.getStep())
+					{
+						System.out.println("!!!!!!!!!!!!!!!!!!!");
 						int x = event.getX() / grid.getStep();
 						int y = event.getY() / grid.getStep();
 						if (grid.getExcel(x, y).isColored() == true) 
 						{
-							if(clearCheckBox.getState() == true)
-							{
+							
 								grid.getExcel(x, y).setColored(false);
 								gridView.repaint();
 								System.out.println("CLEAR");
-							}
 						}
+					}
 					}
 				}
 		    

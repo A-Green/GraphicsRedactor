@@ -158,7 +158,7 @@ public class LineGenerator {
 			for (int i = 0; i < el; i++)
 			{
 				err -= 2 *es;    //домножаем на 2, чтобы сделать алгоритм целочисленным
-				
+				System.out.println(err + " " + x + " "+ y);
 				if(err < 0)
 				{
 					err += 2*el; 	//домножаем на 2, чтобы сделать алгоритм целочисленным
@@ -170,7 +170,7 @@ public class LineGenerator {
 					x += pdx;		//продолжить тянуть прямую дальше, т.е. сдвинуть влево или вправо, если
 					y += pdy;		//цикл идёт по иксу; сдвинуть вверх или вниз, если по y
 				}
-
+				
 				result.add(new Excel(x,y,Color.black));
 			}			
 		
