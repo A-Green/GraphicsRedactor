@@ -11,22 +11,34 @@ public class DDALine extends AbstractLine {
 	{
 		begin = ex1;
 		end = ex2;
+		this.setColoredExes();
 	}
 
 	@Override
 	public ArrayList<Excel> getColoredExes() {
-		return LineGenerator.DDA(begin, end);
+		return coloredEx;
 	}
-
 	@Override
 	public void move(Excel start, Excel finish) {
 		// TODO Auto-generated method stub
 		
 		if (start.getX() == begin.getX() && start.getY() == begin.getY())			
-			begin = finish;
+			{
+				begin = finish;
+				setColoredExes();
+			}
 		
 		if (start.getX() == end.getX() && start.getY() == end.getY())
+			{
 			end = finish;
+			setColoredExes();
+			}
+	}
+
+	@Override
+	protected void setColoredExes() {
+		// TODO Auto-generated method stub
+		coloredEx = LineGenerator.DDA(begin, end);
 	}
 		
 }

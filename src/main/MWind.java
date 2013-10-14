@@ -419,9 +419,7 @@ public class MWind extends JFrame {
 					Excel ex = new Excel (x, y, Color.black);
 					
 					if (gridView.contains(ex)) 
-						{ System.out.println("asdads");
-						gridView.removeEx(ex);
-						}
+						gridView.removeEx(ex);	
 					 else 
 						gridView.addEx(ex);
 						

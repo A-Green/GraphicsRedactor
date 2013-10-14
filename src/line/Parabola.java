@@ -16,18 +16,27 @@ public class Parabola extends AbstractLine{
 		begin = ex;
 		this.p = p;
 		this.size = size;
+		setColoredExes();
 	}
 	@Override
 	public ArrayList<Excel> getColoredExes() {
 		// TODO Auto-generated method stub
-		return ParabolaGenerator.parabola(begin, p, size);
+		return coloredEx;
 	}
 
 	@Override
 	public void move(Excel start, Excel end) {
 		// TODO Auto-generated method stub
 		if (start.getX() == begin.getX() && start.getY() == begin.getY())			
+			{
 			begin = end;
+			setColoredExes();
+			}
+	}
+	@Override
+	protected void setColoredExes() {
+		// TODO Auto-generated method stub
+		coloredEx = ParabolaGenerator.parabola(begin, p, size);
 	}
 
 
