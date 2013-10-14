@@ -14,7 +14,7 @@ public class CircleGenerator {
 		int dx = ex.getX();
 		int dy = ex.getY();
 
-		result.add(new Excel(dx,dy, null));
+		result.add(new Excel(dx, dy, Color.black));
 		
 		int limit = 0;
 		int x = 0;

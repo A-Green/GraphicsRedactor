@@ -16,7 +16,9 @@ public class LineGenerator {
 		int y2 = ex1.getY();
 		int x1 = ex2.getX();
 		int y1 = ex2.getY();
-			
+		
+		result.add(new Excel(ex1.getX(), ex1.getY(), Color.black));
+		result.add(new Excel(ex2.getX(), ex2.getY(), Color.black));
 			int length;
 			int modx = (int) (x2 - x1); // Вычиляем разность координат точек по оси Х
 			
@@ -129,6 +131,9 @@ public class LineGenerator {
 			
 			dx = Math.abs(dx); //далее мы будем сравнивать: "if (dx < dy)"
 			dy = Math.abs(dy); //поэтому необходимо сделать dx = |dx|; dy = |dy|
+			
+			result.add(new Excel(ex1.getX(), ex1.getY(), Color.black));
+			result.add(new Excel(ex2.getX(), ex2.getY(), Color.black));
 			
 			if(dx > dy)			//определяем наклон отрезка:
 			{
