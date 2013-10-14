@@ -13,4 +13,7 @@ public abstract class AbstractLine {
 	public abstract ArrayList<Excel> getColoredExes();
 
 	public abstract void move(Excel start, Excel end);
+	
+	protected abstract void setColoredExes();
+
 }

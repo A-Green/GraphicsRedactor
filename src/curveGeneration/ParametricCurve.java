@@ -23,10 +23,9 @@ public class ParametricCurve {
 	}
 	
 	public ArrayList<Excel> Calculation()
-	{
-		ArrayList<Excel> result = new ArrayList<Excel>();	
+	{	
 		NumberFormat formatter = new DecimalFormat("0.0##########");
-		
+		ArrayList<Excel> result = new ArrayList<Excel>();
 		if(ex1==null || ex2==null || ex3==null || ex4==null) return null;
 			
 			ex1.setColor(Color.red);
@@ -38,10 +37,6 @@ public class ParametricCurve {
 			Gnx.fillingMatrix(masGnx);
 			
 			Matrix Mn = new Matrix(4,4);
-			/*double masMn[] = {-1,3,-3,1,
-					 3,-6,3,0,
-					  -3,0,3,0,
-					  1,4,1,0};*/
 			
 			Mn.fillingMatrix(masMn);
 			
@@ -58,7 +53,7 @@ public class ParametricCurve {
 					double masT[] = {factor*Double.parseDouble(formatter.format(Math.pow(i,3)).replace(',', '.')),
 							factor*Double.parseDouble(formatter.format(Math.pow(i,2)).replace(',', '.')),
 							factor*Double.parseDouble(formatter.format(Math.pow(i,1)).replace(',', '.')),
-							1.0};
+							factor*1.0};
 					T.fillingMatrix(masT);
 					
 					if(matrixMultiplication(T,Cx) != null)
@@ -141,7 +136,7 @@ public class ParametricCurve {
 			}
 		}
 		
-		step = (1.0/max_size)/3.2;
+		step = (1.0/max_size)/5.0;
 		
 		return step;
 	}
@@ -178,6 +173,12 @@ public class ParametricCurve {
 	public static void setFactor(double factor) {
 		ParametricCurve.factor = factor;
 	}
+	
+	/*public static Excel[] getMasEx()
+	{
+		Excel masEx[] = {ex1,ex2,ex3,ex4};
+		return masEx;
+	}*/
 
 	private static Excel ex1;
 	private static Excel ex2;

@@ -9,6 +9,7 @@ public class BesieCurve extends ParametricCurve{
 	public BesieCurve(Excel ex4, Excel ex3, Excel ex2, Excel ex1) 
 	{
 		super(ex4, ex3, ex2, ex1);
+		// TODO Auto-generated constructor stub
 	}
 	
 	public ArrayList<Excel> Calculation()
