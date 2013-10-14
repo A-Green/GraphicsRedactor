@@ -26,7 +26,6 @@ public class ParametricCurve {
 	{	
 		NumberFormat formatter = new DecimalFormat("0.0##########");
 		ArrayList<Excel> result = new ArrayList<Excel>();
-		if(ex1==null || ex2==null || ex3==null || ex4==null) return null;
 			
 			ex1.setColor(Color.red);
 			ex2.setColor(Color.red);

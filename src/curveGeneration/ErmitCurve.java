@@ -16,6 +16,7 @@ public class ErmitCurve extends ParametricCurve
 	public ArrayList<Excel> Calculation()
 	{
 		System.out.println("ermitForm");
+		if(getEx1()==null || getEx2()==null || getEx3()==null || getEx4()==null) return null;
 		double masMn[] = {2,-2,1,1,
 				 -3,3,-2,-1,
 				  0,0,1,0,
