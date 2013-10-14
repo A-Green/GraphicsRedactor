@@ -184,9 +184,12 @@ public class MWind extends JFrame {
 				DDALine DDA = new DDALine(gridView.getClickedEx(), gridView.getClickedEx());
 				
 				if (DDA.getColoredExes() == null)
+					{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 2 точки!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
+							gridView.repaint();
+					}
 				else 
 				{
 						if (stepCheckBox.getState() == false)						
@@ -209,10 +212,12 @@ public class MWind extends JFrame {
 				BrezenhemLine  BLine= new BrezenhemLine(gridView.getClickedEx(), gridView.getClickedEx());
 				
 				if (BLine.getColoredExes() == null)
+				{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 2 точки!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
-				
+					gridView.repaint();
+				}
 				else
 				{					
 					if(stepCheckBox.getState() == false)
@@ -234,11 +239,13 @@ public class MWind extends JFrame {
 				
 				AntiAliasingLine AAL = new AntiAliasingLine(gridView.getClickedEx(), gridView.getClickedEx());
 				
-				if (AAL.getColoredExes() == null)			
+				if (AAL.getColoredExes() == null)	
+				{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 2 точки!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
-				
+					gridView.repaint();
+				}
 				else
 				{
 					if(stepCheckBox.getState() == false)		
@@ -282,10 +289,13 @@ public class MWind extends JFrame {
 				{
 					Circle circle = new Circle(gridView.getClickedEx(), radius);
 					
-					if(circle.getColoredExes() == null) 				
+					if(circle.getColoredExes() == null) 	
+					{
 						JOptionPane.showMessageDialog(new JButton(),
 							"Укажите центр окружности!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
+						gridView.repaint();
+					}
 						
 					else 
 					{	
@@ -321,9 +331,12 @@ public class MWind extends JFrame {
 						if (p_value != 0) {
 							Parabola parabola = new Parabola(gridView.getClickedEx(), p_value, gridView.getH());
 							if (parabola.getColoredExes() == null) 
+							{
 								JOptionPane.showMessageDialog(new JButton(),
 										"Укажите вершину параболы!", "Информация",
 										JOptionPane.WARNING_MESSAGE);
+								gridView.repaint();
+							}
 							else {
 								if (stepCheckBox.getState() == false)
 									gridView.addLine(parabola);
@@ -359,9 +372,12 @@ public class MWind extends JFrame {
 						gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
 
 				if (ermit.getColoredExes() == null)
+				{
 					JOptionPane.showMessageDialog(new JButton(),
 							"Выберите 4 точки!", "Информация",
 							JOptionPane.WARNING_MESSAGE);
+					gridView.repaint();
+				}
 				
 				else
 				{					
