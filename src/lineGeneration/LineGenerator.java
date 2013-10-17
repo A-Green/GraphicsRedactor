@@ -19,6 +19,7 @@ public class LineGenerator {
 		
 		result.add(new Excel(ex1.getX(), ex1.getY(), Color.black));
 		result.add(new Excel(ex2.getX(), ex2.getY(), Color.black));
+		
 			int length;
 			int modx = (int) (x2 - x1); // ¬ычил€ем разность координат точек по оси ’
 			
@@ -34,8 +35,10 @@ public class LineGenerator {
 			
 			if (modx >= mody) { // вычисл€ем длину пр€мой, как большее из разностей
 				length = modx;
+				//System.out.println("Length = " + length);
 			} else {
 				length = mody;
+				//System.out.println("Length = " + length);
 			}
 		
 			if (mody == 0) return horizontalLine(x1, x2, y1); // частный случай - горизонтальна€ лини€
@@ -45,6 +48,8 @@ public class LineGenerator {
 			double dx = (x2 - x1) /(double) length; //вычисление приращени€ по оси ’
 			double dy = (y2 - y1) /(double) length; //вычисление приращени€ по оси ”
 			
+			//System.out.println("dx = " + dx);
+			//System.out.println("dy = " + dy);
 			int signx = Sign(dx); //‘-и€ возвращающа€ -1, 0 , 1 относительно знака приращени€
 			int signy = Sign(dy); //‘-и€ возвращающа€ -1, 0 , 1 относительно знака приращени€
 			
@@ -58,6 +63,7 @@ public class LineGenerator {
 				x = x + dx;
 				y = y + dy;				
 				result.add(new Excel((int) x,(int) y, Color.black));
+				//System.out.println("X: " + (int) x + " Y:" + (int) y);
 				i++;
 				}
 			}
@@ -91,7 +97,6 @@ public class LineGenerator {
 				i++;
 				}
 			}
-			
 		return result;		
 	}
 
@@ -163,7 +168,7 @@ public class LineGenerator {
 			for (int i = 0; i < el; i++)
 			{
 				err -= 2 *es;    //домножаем на 2, чтобы сделать алгоритм целочисленным
-				System.out.println(err + " " + x + " "+ y);
+				//System.out.println(err + " " + x + " "+ y);
 				if(err < 0)
 				{
 					err += 2*el; 	//домножаем на 2, чтобы сделать алгоритм целочисленным
@@ -177,8 +182,9 @@ public class LineGenerator {
 				}
 				
 				result.add(new Excel(x,y,Color.black));
+				//System.out.println("X: " + (int) x + " Y:" + (int) y);
 			}			
-		
+
 		return result;
 	}
 
