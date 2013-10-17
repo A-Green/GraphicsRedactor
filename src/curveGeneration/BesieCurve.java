@@ -14,7 +14,7 @@ public class BesieCurve extends ParametricCurve{
 	
 	public ArrayList<Excel> Calculation()
 	{
-		System.out.println("besieForm");
+		//System.out.println("besieForm");
 		double masMn[] = {-1,3,-3,1,
 				 3,-6,3,0,
 				  -3,3,0,0,

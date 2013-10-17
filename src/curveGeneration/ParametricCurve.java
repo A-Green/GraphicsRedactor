@@ -60,7 +60,7 @@ public class ParametricCurve {
 					{
 						Matrix Pt;
 						Pt = matrixMultiplication(T,Cx);
-						Pt.showMatrix();
+						//Pt.showMatrix();
 
 						
 						if(Pt.getColumns() == 1 && Pt.getRows() == 2)

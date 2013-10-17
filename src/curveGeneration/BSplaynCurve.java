@@ -13,7 +13,7 @@ public class BSplaynCurve extends ParametricCurve{
 	
 	public ArrayList<Excel> Calculation()
 	{
-		System.out.println("BSplaynForm");
+		//System.out.println("BSplaynForm");
 		ArrayList<Excel> result = new ArrayList<Excel>();
 		
 		Excel masEx[] = {getEx1(),getEx2(),getEx3(),getEx4()};
