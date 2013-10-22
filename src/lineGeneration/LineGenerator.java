@@ -107,9 +107,13 @@ public class LineGenerator {
 			int y1 = ex1.getY();
 			int x2 = ex2.getX();
 			int y2 = ex2.getY();
+			System.out.println("Point1 = "+ex1);
+			System.out.println("Point2 = "+ex2);
 			
 			int dx = x2 - x1;     //проекция на ось x
 			int dy = y2 - y1;     //проекция на ось y
+			System.out.println("Dx = "+dx);
+			System.out.println("Dy = "+dy);
 			
 			if (dy == 0) return horizontalLine(x1, x2, y1);
 			if (dx == 0) return verticalalLine(y1, y2, x1);
@@ -163,15 +167,17 @@ public class LineGenerator {
 			for (int i = 0; i < el; i++)
 			{
 				err -= 2 *es;    //домножаем на 2, чтобы сделать алгоритм целочисленным
-				System.out.println(err + " " + x + " "+ y);
+				System.out.println("Error First = "+err);
 				if(err < 0)
 				{
 					err += 2*el; 	//домножаем на 2, чтобы сделать алгоритм целочисленным
+					System.out.println("Error = "+err + "; X = " + x + "; Y="+ y);
 					x += incx; 		//сдвинуть прямую (сместить вверх или вниз, если цикл проходит по иксам)
 					y += incy; 		//или сместить влево-вправо, если цикл проходит по y
 				}
 				else 
 				{
+					System.out.println("Error = "+err + "; X = " + x + "; Y="+ y);
 					x += pdx;		//продолжить тянуть прямую дальше, т.е. сдвинуть влево или вправо, если
 					y += pdy;		//цикл идёт по иксу; сдвинуть вверх или вниз, если по y
 				}

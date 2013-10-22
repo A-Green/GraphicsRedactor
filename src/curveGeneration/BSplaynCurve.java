@@ -28,17 +28,41 @@ public class BSplaynCurve extends ParametricCurve{
 		double factor = 1/6.0;
 		setFactor(factor);
 		
-		for(int i=1;i<masEx.length-2;i++)
+		for(int i=1;i<masEx.length;i++)
 		{
-			double masGnx[] = {masEx[i-1].getX(),masEx[i-1].getY(),
+			int prevIndex = getIndex(masEx,i-1);
+			int nextIndex1 = getIndex(masEx,i+1);
+			int nextIndex2 = getIndex(masEx,i+2);
+			
+			/*double masGnx[] = {masEx[i-1].getX(),masEx[i-1].getY(),
 							   masEx[i].getX(),masEx[i].getY(),
 							   masEx[i+1].getX(),masEx[i+1].getY(),
-							   masEx[i+2].getX(),masEx[i+2].getY()};
+							   masEx[i+2].getX(),masEx[i+2].getY()};*/
+			
+			double masGnx[] = {masEx[prevIndex].getX(),masEx[prevIndex].getY(),
+					   masEx[i].getX(),masEx[i].getY(),
+					   masEx[nextIndex1].getX(),masEx[nextIndex1].getY(),
+					   masEx[nextIndex2].getX(),masEx[nextIndex2].getY()};
+			
 			setMasGnx(masGnx);
 			result.addAll(super.Calculation());
 		}
 		
 		return result;
+	}
+	
+	public int getIndex(Excel masEx[],int index)
+	{
+		int size = masEx.length;
+		
+		if (index == -1)
+			return size - 1;
+		else if (index == size)
+			return 0;
+		else if (index > size)
+			return index - size;
+		
+		return index;
 	}
 
 }
