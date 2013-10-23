@@ -19,6 +19,7 @@ public class LineGenerator {
 		
 		result.add(new Excel(ex1.getX(), ex1.getY(), Color.black));
 		result.add(new Excel(ex2.getX(), ex2.getY(), Color.black));
+		
 			int length;
 			int modx = (int) (x2 - x1); // Вычиляем разность координат точек по оси Х
 			
@@ -34,8 +35,10 @@ public class LineGenerator {
 			
 			if (modx >= mody) { // вычисляем длину прямой, как большее из разностей
 				length = modx;
+				//System.out.println("Length = " + length);
 			} else {
 				length = mody;
+				//System.out.println("Length = " + length);
 			}
 		
 			if (mody == 0) return horizontalLine(x1, x2, y1); // частный случай - горизонтальная линия
@@ -45,6 +48,8 @@ public class LineGenerator {
 			double dx = (x2 - x1) /(double) length; //вычисление приращения по оси Х
 			double dy = (y2 - y1) /(double) length; //вычисление приращения по оси У
 			
+			//System.out.println("dx = " + dx);
+			//System.out.println("dy = " + dy);
 			int signx = Sign(dx); //Ф-ия возвращающая -1, 0 , 1 относительно знака приращения
 			int signy = Sign(dy); //Ф-ия возвращающая -1, 0 , 1 относительно знака приращения
 			
@@ -58,6 +63,7 @@ public class LineGenerator {
 				x = x + dx;
 				y = y + dy;				
 				result.add(new Excel((int) x,(int) y, Color.black));
+				//System.out.println("X: " + (int) x + " Y:" + (int) y);
 				i++;
 				}
 			}
@@ -91,7 +97,6 @@ public class LineGenerator {
 				i++;
 				}
 			}
-			
 		return result;		
 	}
 
@@ -167,24 +172,25 @@ public class LineGenerator {
 			for (int i = 0; i < el; i++)
 			{
 				err -= 2 *es;    //домножаем на 2, чтобы сделать алгоритм целочисленным
-				System.out.println("Error First = "+err);
+				//System.out.println("Error First = "+err);
 				if(err < 0)
 				{
 					err += 2*el; 	//домножаем на 2, чтобы сделать алгоритм целочисленным
-					System.out.println("Error = "+err + "; X = " + x + "; Y="+ y);
+					//System.out.println("Error = "+err + "; X = " + x + "; Y="+ y);
 					x += incx; 		//сдвинуть прямую (сместить вверх или вниз, если цикл проходит по иксам)
 					y += incy; 		//или сместить влево-вправо, если цикл проходит по y
 				}
 				else 
 				{
-					System.out.println("Error = "+err + "; X = " + x + "; Y="+ y);
+					//System.out.println("Error = "+err + "; X = " + x + "; Y="+ y);
 					x += pdx;		//продолжить тянуть прямую дальше, т.е. сдвинуть влево или вправо, если
 					y += pdy;		//цикл идёт по иксу; сдвинуть вверх или вниз, если по y
 				}
 				
 				result.add(new Excel(x,y,Color.black));
+				//System.out.println("X: " + (int) x + " Y:" + (int) y);
 			}			
-		
+
 		return result;
 	}
 

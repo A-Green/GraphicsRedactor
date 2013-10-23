@@ -42,7 +42,7 @@ public class CurveGenerator {
 			Matrix Gnx = new Matrix(4,2);
 			double masGnx[] = {Px1,Py1,Px4,Py4,r1.getX(),r1.getY(),r4.getX(),r4.getY()};
 			Gnx.fillingMatrix(masGnx);
-			Gnx.showMatrix();
+			//Gnx.showMatrix();
 			
 			Matrix Mn = new Matrix(4,4);
 			double masMn[] = {2,-2,1,1,

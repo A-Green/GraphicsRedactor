@@ -1,46 +1,49 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
-import model.*;
-import view.*;
-import parabola.*;
-import line.*;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Checkbox;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JPopupMenu;
-
-import java.awt.Component;
-import circle.*;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.MemoryImageSource;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+
+import line.AntiAliasingLine;
+import line.BSplaynForm;
+import line.BesieForm;
+import line.BrezenhemLine;
+import line.Circle;
+import line.DDALine;
+import line.ErmitForm;
+import line.Parabola;
+import model.Excel;
+import parabola.PDialog;
+import view.GridView;
+import circle.RadiusDialog;
 public class MWind extends JFrame {
 	
 	/**
@@ -77,8 +80,7 @@ public class MWind extends JFrame {
 		setBounds(100, 100, 507, 485);
 		// сетка
 		final GridView gridView = new GridView();
-		final int ClickedX;
-		final int ClickedY;
+
 		// верхнее меню
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -346,113 +348,110 @@ public class MWind extends JFrame {
 					}
 				});
 				menu.add(menuParabola);
-
-		
-		
-	//-------------------------------------------------------------------------------------------------------------------------------
-		
-	//---------------------------------Параметрические кривые-------------------------------------------------------------------------
-
-
-		JMenu curveMenu = new JMenu("\u041F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u043A\u0440\u0438\u0432\u044B\u0435");
-
-		menuBar.add(curveMenu);
-		
-		//Эрмит
-		JMenuItem ermitaItem = new JMenuItem("форма Эрмита");
-		ermitaItem.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-//<<<<<<< HEAD
 				
-//=======
-				ErmitForm ermit = new ErmitForm(gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
-//>>>>>>> 87d3a94f72943394f7a48b833084dfcc5d6407a0
-
-				if (ermit.getColoredExes() == null)
-				{
-					JOptionPane.showMessageDialog(new JButton(),
-							"Выберите 4 точки!", "Информация",
-							JOptionPane.WARNING_MESSAGE);
-					gridView.repaint();
-				}
-				
-				else
-				{					
-					if(stepCheckBox.getState() == false)
-						gridView.addLine(ermit);
-					else
-						gridView.setSteplyArray(ermit);
-					
-					gridView.repaint();				
-				}
-			}
-			
-		});
-		curveMenu.add(ermitaItem);
-		
-		
-		//Безье
-				JMenuItem besieItem = new JMenuItem("форма Безье");
-				besieItem.addMouseListener(new MouseAdapter(){
-					@Override
-					public void mousePressed(MouseEvent e)
-					{
-						BesieForm besie = new BesieForm(gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
-
-						if (besie.getColoredExes() == null)
-						{
-							JOptionPane.showMessageDialog(new JButton(),
-									"Выберите 4 точки!", "Информация",
-									JOptionPane.WARNING_MESSAGE);
-							gridView.repaint();
-						}
 						
-						else
-						{					
-							if(stepCheckBox.getState() == false)
-								gridView.addLine(besie);
-							else
-								gridView.setSteplyArray(besie);
-							
-							gridView.repaint();				
-						}
-					}
-					
-				});
-				curveMenu.add(besieItem);
-				
-				
-				//В-сплайн
-				JMenuItem bSplaynItem = new JMenuItem("В-сплайн");
-				bSplaynItem.addMouseListener(new MouseAdapter(){
-					@Override
-					public void mousePressed(MouseEvent e)
-					{
-						BSplaynForm bSplayn = new BSplaynForm(gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
-
-						if (bSplayn.getColoredExes() == null)
-						{
-							JOptionPane.showMessageDialog(new JButton(),
-									"Выберите 4 точки!", "Информация",
-									JOptionPane.WARNING_MESSAGE);
-							gridView.repaint();
-						}
 						
-						else
-						{					
-							if(stepCheckBox.getState() == false)
-								gridView.addLine(bSplayn);
-							else
-								gridView.setSteplyArray(bSplayn);
-							
-							gridView.repaint();				
-						}
-					}
-					
-				});
-				curveMenu.add(bSplaynItem);
+					//-------------------------------------------------------------------------------------------------------------------------------
+						
+					//---------------------------------Параметрические кривые-------------------------------------------------------------------------
+				
+				
+						JMenu curveMenu = new JMenu("\u041F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u043A\u0440\u0438\u0432\u044B\u0435");
+						menu.add(curveMenu);
+								
+								//Эрмит
+								JMenuItem ermitaItem = new JMenuItem("форма Эрмита");
+								ermitaItem.addMouseListener(new MouseAdapter(){
+									@Override
+									public void mousePressed(MouseEvent e)
+									{
+
+										ErmitForm ermit = new ErmitForm(gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
+
+
+										if (ermit.getColoredExes() == null)
+										{
+											JOptionPane.showMessageDialog(new JButton(),
+													"Выберите 4 точки!", "Информация",
+													JOptionPane.WARNING_MESSAGE);
+											gridView.repaint();
+										}
+										
+										else
+										{					
+											if(stepCheckBox.getState() == false)
+												gridView.addLine(ermit);
+											else
+												gridView.setSteplyArray(ermit);
+											
+											gridView.repaint();				
+										}
+									}
+									
+								});
+								curveMenu.add(ermitaItem);
+								
+								
+								//Безье
+										JMenuItem besieItem = new JMenuItem("форма Безье");
+										besieItem.addMouseListener(new MouseAdapter(){
+											@Override
+											public void mousePressed(MouseEvent e)
+											{
+												BesieForm besie = new BesieForm(gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
+
+												if (besie.getColoredExes() == null)
+												{
+													JOptionPane.showMessageDialog(new JButton(),
+															"Выберите 4 точки!", "Информация",
+															JOptionPane.WARNING_MESSAGE);
+													gridView.repaint();
+												}
+												
+												else
+												{					
+													if(stepCheckBox.getState() == false)
+														gridView.addLine(besie);
+													else
+														gridView.setSteplyArray(besie);
+													
+													gridView.repaint();				
+												}
+											}
+											
+										});
+										curveMenu.add(besieItem);
+										
+										
+										//В-сплайн
+										JMenuItem bSplaynItem = new JMenuItem("В-сплайн");
+										bSplaynItem.addMouseListener(new MouseAdapter(){
+											@Override
+											public void mousePressed(MouseEvent e)
+											{
+												BSplaynForm bSplayn = new BSplaynForm(gridView.getAllClicked());
+
+												if (bSplayn.getColoredExes() == null)
+												{
+													JOptionPane.showMessageDialog(new JButton(),
+															"Выберите 4 и больше точки!", "Информация",
+															JOptionPane.WARNING_MESSAGE);
+													gridView.repaint();
+												}
+												
+												else
+												{					
+													if(stepCheckBox.getState() == false)
+														gridView.addLine(bSplayn);
+													else
+														gridView.setSteplyArray(bSplayn);
+													
+													gridView.repaint();				
+												}
+											}
+											
+										});
+										curveMenu.add(bSplaynItem);
 		
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	

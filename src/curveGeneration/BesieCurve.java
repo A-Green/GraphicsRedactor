@@ -8,12 +8,13 @@ public class BesieCurve extends ParametricCurve{
 
 	public BesieCurve(Excel ex4, Excel ex3, Excel ex2, Excel ex1) 
 	{
-		super(ex4, ex3, ex2, ex1);
+		super(ex4, ex3, ex2, ex1, null);
 		// TODO Auto-generated constructor stub
 	}
 	
 	public ArrayList<Excel> Calculation()
 	{
+
 		System.out.println("besieForm");
 		if(getEx1()==null || getEx2()==null || getEx3()==null || getEx4()==null) return null;
 		double masMn[] = {-1,3,-3,1,

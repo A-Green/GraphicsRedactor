@@ -14,12 +14,13 @@ import model.Excel;
 
 public class ParametricCurve {
 	
-	public ParametricCurve(Excel Ex4, Excel Ex3, Excel Ex2, Excel Ex1)
+	public ParametricCurve(Excel Ex4, Excel Ex3, Excel Ex2, Excel Ex1, ArrayList<Excel> allExcel)
 	{
 		ex1 = Ex1;
 		ex2 = Ex2;
 		ex3 = Ex3;
 		ex4 = Ex4;
+		allexcel = allExcel;
 	}
 	
 	public ArrayList<Excel> Calculation()
@@ -27,10 +28,20 @@ public class ParametricCurve {
 		NumberFormat formatter = new DecimalFormat("0.0##########");
 		ArrayList<Excel> result = new ArrayList<Excel>();
 			
+		if(forStepExcel != null)
+		{
+			for(int i=0;i<forStepExcel.size();i++)
+			{
+				forStepExcel.get(i).setColor(Color.red);
+			}
+		}
+		else
+		{
 			ex1.setColor(Color.red);
 			ex2.setColor(Color.red);
 			ex3.setColor(Color.red);
 			ex4.setColor(Color.red);
+		}
 			
 			Matrix Gnx = new Matrix(4,2);
 			Gnx.fillingMatrix(masGnx);
@@ -44,7 +55,15 @@ public class ParametricCurve {
 			{
 				Cx = matrixMultiplication(Mn,Gnx);
 				
-				double step = getStep(ex1,ex2,ex3,ex4);
+				double step = 0.0;
+				
+				if(forStepExcel != null)
+				{
+					step = getStep(forStepExcel.get(0),forStepExcel.get(1),forStepExcel.get(2),forStepExcel.get(3));
+				}
+				else{
+					step = getStep(ex1,ex2,ex3,ex4);
+				}
 				
 				for(double i=0; i<=1; i+=step)
 				{
@@ -59,7 +78,7 @@ public class ParametricCurve {
 					{
 						Matrix Pt;
 						Pt = matrixMultiplication(T,Cx);
-						Pt.showMatrix();
+						//Pt.showMatrix();
 
 						
 						if(Pt.getColumns() == 1 && Pt.getRows() == 2)
@@ -68,10 +87,18 @@ public class ParametricCurve {
 						}
 					}
 				}
-				result.add(ex1);
-				result.add(ex2);
-				result.add(ex3);
-				result.add(ex4);
+				
+				if(forStepExcel != null)
+				{
+					result.addAll(forStepExcel);
+				}
+				else
+				{
+					result.add(ex1);
+					result.add(ex2);
+					result.add(ex3);
+					result.add(ex4);
+				}
 			}
 		
 		return result;
@@ -172,13 +199,25 @@ public class ParametricCurve {
 	public static void setFactor(double factor) {
 		ParametricCurve.factor = factor;
 	}
-	
-	/*public static Excel[] getMasEx()
-	{
-		Excel masEx[] = {ex1,ex2,ex3,ex4};
-		return masEx;
-	}*/
 
+	public static ArrayList<Excel> getAllexcel() {
+		return allexcel;
+	}
+
+	public static void setAllexcel(ArrayList<Excel> allexcel) {
+		ParametricCurve.allexcel = allexcel;
+	}
+
+	public static ArrayList<Excel> getForStepExcel() {
+		return forStepExcel;
+	}
+
+	public static void setForStepExcel(ArrayList<Excel> forStepExcel) {
+		ParametricCurve.forStepExcel = forStepExcel;
+	}
+
+	private static ArrayList<Excel> allexcel;
+	private static ArrayList<Excel> forStepExcel;
 	private static Excel ex1;
 	private static Excel ex2;
 	private static Excel ex3;
