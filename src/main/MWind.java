@@ -1,15 +1,13 @@
 package main;
 
+import generation.circleGeneration.RadiusDialog;
+import generation.parabolaGeneration.PDialog;
+
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -19,8 +17,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.image.MemoryImageSource;
+import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -32,18 +31,16 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import line.AntiAliasingLine;
-import line.BSplaynForm;
-import line.BesieForm;
-import line.BrezenhemLine;
-import line.Circle;
-import line.DDALine;
-import line.ErmitForm;
-import line.Parabola;
 import model.Excel;
-import parabola.PDialog;
+import shape.lines.AntiAliasingLine;
+import shape.lines.BSplaynForm;
+import shape.lines.BesieForm;
+import shape.lines.BrezenhemLine;
+import shape.lines.Circle;
+import shape.lines.DDALine;
+import shape.lines.ErmitForm;
+import shape.lines.Parabola;
 import view.GridView;
-import circle.RadiusDialog;
 public class MWind extends JFrame {
 	
 	/**
@@ -141,31 +138,6 @@ public class MWind extends JFrame {
 		});
 		bottonPanel.add(stepCheckBox);
 		
-		//Ћастик, если выделено, то стираетс€ все, что отрисовано
-		final Checkbox clearCheckBox = new Checkbox("Eraser     ");
-		clearCheckBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				 if (arg0.getStateChange() == ItemEvent.DESELECTED)
-					 gridView.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				 if (arg0.getStateChange() == ItemEvent.SELECTED)
-				 {
-					 Toolkit tk = Toolkit.getDefaultToolkit();
-				     Dimension d = tk.getBestCursorSize(100, 100); // d Ч размер изображени€
-				     int w = d.width, h = d.height, k = 0;
-				     Point p = new Point(15, 15);                  // ‘окус курсора будет
-				     int[] pix = new int[w * h];                 // «десь будут пикселы изображени€ 
-				     for(int i = 8; i < w; i++) 
-				    	 for(int j = 8; j < h; j++)
-				    		 pix[k++] = 0xFFFFFFF0; 
-				     Image im = createImage(new MemoryImageSource(w, h, pix, 0, w)); 
-				     Cursor curs = tk.createCustomCursor(im, p, null);  
-				        
-					 gridView.setCursor(curs);
-				 }
-			}
-		});
-		bottonPanel.add(clearCheckBox);
-		
 		
 	//---------------------------------------ќ“–≈« »------------------------------------------------------------------
 		//меню отрезки
@@ -191,7 +163,7 @@ public class MWind extends JFrame {
 				else 
 				{
 						if (stepCheckBox.getState() == false)						
-							gridView.addLine(DDA);
+							gridView.addFugure(DDA);
 						else
 							gridView.setSteplyArray(DDA);
 						
@@ -219,7 +191,7 @@ public class MWind extends JFrame {
 				else
 				{					
 					if(stepCheckBox.getState() == false)
-						gridView.addLine(BLine);
+						gridView.addFugure(BLine);
 					else
 						gridView.setSteplyArray(BLine);
 					
@@ -247,7 +219,7 @@ public class MWind extends JFrame {
 				else
 				{
 					if(stepCheckBox.getState() == false)		
-						gridView.addLine(AAL);
+						gridView.addFugure(AAL);
 					else
 						gridView.setSteplyArray(AAL);
 					
@@ -298,7 +270,7 @@ public class MWind extends JFrame {
 					else 
 					{	
 						if(stepCheckBox.getState() == false)
-							gridView.addLine(circle);
+							gridView.addFugure(circle);
 						else
 							gridView.setSteplyArray(circle);
 							
@@ -337,7 +309,7 @@ public class MWind extends JFrame {
 							}
 							else {
 								if (stepCheckBox.getState() == false)
-									gridView.addLine(parabola);
+									gridView.addFugure(parabola);
 								else
 									gridView.setSteplyArray(parabola);
 									gridView.repaint();
@@ -365,9 +337,13 @@ public class MWind extends JFrame {
 									@Override
 									public void mousePressed(MouseEvent e)
 									{
-
-										ErmitForm ermit = new ErmitForm(gridView.getAllClicked());
-
+										ArrayList<Excel> fourLastExceles = new ArrayList<Excel>();
+										fourLastExceles.add(gridView.getClickedEx());
+										fourLastExceles.add(gridView.getClickedEx());
+										fourLastExceles.add(gridView.getClickedEx());
+										fourLastExceles.add(gridView.getClickedEx());
+										
+										ErmitForm ermit = new ErmitForm(fourLastExceles);
 
 										if (ermit.getColoredExes() == null)
 										{
@@ -380,7 +356,7 @@ public class MWind extends JFrame {
 										else
 										{					
 											if(stepCheckBox.getState() == false)
-												gridView.addLine(ermit);
+												gridView.addFugure(ermit);
 											else
 												gridView.setSteplyArray(ermit);
 											
@@ -398,8 +374,14 @@ public class MWind extends JFrame {
 											@Override
 											public void mousePressed(MouseEvent e)
 											{
-												BesieForm besie = new BesieForm(gridView.getAllClicked());
-
+												ArrayList<Excel> fourLastExceles = new ArrayList<Excel>();
+												fourLastExceles.add(gridView.getClickedEx());
+												fourLastExceles.add(gridView.getClickedEx());
+												fourLastExceles.add(gridView.getClickedEx());
+												fourLastExceles.add(gridView.getClickedEx());
+												
+												BesieForm besie = new BesieForm(fourLastExceles);
+												
 												if (besie.getColoredExes() == null)
 												{
 													JOptionPane.showMessageDialog(new JButton(),
@@ -411,7 +393,7 @@ public class MWind extends JFrame {
 												else
 												{					
 													if(stepCheckBox.getState() == false)
-														gridView.addLine(besie);
+														gridView.addFugure(besie);
 													else
 														gridView.setSteplyArray(besie);
 													
@@ -429,7 +411,7 @@ public class MWind extends JFrame {
 											@Override
 											public void mousePressed(MouseEvent e)
 											{
-												BSplaynForm bSplayn = new BSplaynForm(gridView.getAllClicked());
+												BSplaynForm bSplayn = new BSplaynForm(gridView.popAllClicked());
 
 												if (bSplayn.getColoredExes() == null)
 												{
@@ -442,7 +424,7 @@ public class MWind extends JFrame {
 												else
 												{					
 													if(stepCheckBox.getState() == false)
-														gridView.addLine(bSplayn);
+														gridView.addFugure(bSplayn);
 													else
 														gridView.setSteplyArray(bSplayn);
 													
@@ -452,6 +434,18 @@ public class MWind extends JFrame {
 											
 										});
 										curveMenu.add(bSplaynItem);
+										
+										JMenu mnd = new JMenu("3D \u0424\u0438\u0440\u0443\u0440\u044B");
+										menuBar.add(mnd);
+										
+										JMenuItem cubeItem = new JMenuItem("\u041A\u0443\u0431");
+										cubeItem.addMouseListener(new MouseAdapter() {
+											@Override
+											public void mouseClicked(MouseEvent arg0) {
+											}
+										});
+										mnd.add(cubeItem);
+		gridView.setLayout(new BoxLayout(gridView, BoxLayout.X_AXIS));
 		
 	//-----------------------------------------------------------------------------------------------------------------------------------
 	

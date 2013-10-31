@@ -45,8 +45,16 @@ public class ClickedExController {
 	}
 	
 	public ArrayList<Excel> getClickedExes()
-	{
+	{	
 		return exes;
 	}
+	
+	public ArrayList<Excel> popAll()
+	{	
+		ArrayList<Excel> result = new ArrayList<Excel>(exes);
+		clear();
+		return result;
+	}
+	
 
 }

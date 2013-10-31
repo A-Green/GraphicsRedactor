@@ -16,16 +16,25 @@ public class Excel {
 		setColored(false);
 		setX(x);
 		setY(y);
-		setT(0);
-		setZ(0);
+		setT(1);
+		setZ(1);
 	}
 	
 	public Excel(int x, int y,Color col)
 	{
 		setX(x);
 		setY(y);
-		setT(0);
-		setZ(0);
+		setT(1);
+		setZ(1);
+		setColor(col);
+	}
+	
+	public Excel(int x, int y, int z, Color col)
+	{
+		setX(x);
+		setY(y);
+		setT(1);
+		setZ(z);
 		setColor(col);
 	}
 
