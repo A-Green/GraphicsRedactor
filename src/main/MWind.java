@@ -418,7 +418,7 @@ public class MWind extends JFrame {
 											@Override
 											public void mousePressed(MouseEvent e)
 											{
-												BSplaynForm bSplayn = new BSplaynForm(gridView.getAllClicked());
+												BSplaynForm bSplayn = new BSplaynForm(gridView.popAllClicked());
 
 												if (bSplayn.getColoredExes() == null)
 												{

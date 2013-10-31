@@ -249,5 +249,10 @@ public class GridView extends JPanel{
 		  return ClickedController.getClickedExes();
 	  }
 	  
+	  public ArrayList<Excel> popAllClicked()
+	  {
+		  return ClickedController.popAll();
+	  }
+	  
 
 }
