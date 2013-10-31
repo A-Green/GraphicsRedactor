@@ -1,10 +1,14 @@
 package curveGeneration;
 
+import java.util.ArrayList;
+
 public class Matrix {
 	
 	private int columns;
 	private int rows;
 	private double matrix[][];
+	public static ArrayList<Double> f = new ArrayList<Double>();
+	public static ArrayList<Double> s = new ArrayList<Double>();
 	
 	
 	public Matrix(int n,int m)
@@ -39,9 +43,31 @@ public class Matrix {
 			System.out.println();
 			for(int j=0; j<rows; j++)
 			{
-				System.out.print(matrix[i][j]+" ");
+				//System.out.print(matrix[i][j]+" ");
 			}
 		}
+		f.add(matrix[0][0]);
+		s.add(matrix[0][1]);
+	}
+	
+	public void showMatrixF()
+	{
+		System.out.print("First column");
+
+			for(int j=0; j<rows; j++)
+			{
+				System.out.print(matrix[0][j]);
+			}
+	}
+	
+	public void showMatrixS()
+	{
+		System.out.print("Second column");
+			System.out.println();
+			for(int j=0; j<rows; j++)
+			{
+				System.out.print(matrix[1][j]);
+			}
 	}
 	
 	public double getEl(int n,int m)

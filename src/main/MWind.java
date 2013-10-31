@@ -366,7 +366,7 @@ public class MWind extends JFrame {
 									public void mousePressed(MouseEvent e)
 									{
 
-										ErmitForm ermit = new ErmitForm(gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
+										ErmitForm ermit = new ErmitForm(gridView.getAllClicked());
 
 
 										if (ermit.getColoredExes() == null)
@@ -398,7 +398,7 @@ public class MWind extends JFrame {
 											@Override
 											public void mousePressed(MouseEvent e)
 											{
-												BesieForm besie = new BesieForm(gridView.getClickedEx(), gridView.getClickedEx(),gridView.getClickedEx(),gridView.getClickedEx());
+												BesieForm besie = new BesieForm(gridView.getAllClicked());
 
 												if (besie.getColoredExes() == null)
 												{

@@ -14,59 +14,63 @@ import model.Excel;
 
 public class ParametricCurve {
 	
-	public ParametricCurve(Excel Ex4, Excel Ex3, Excel Ex2, Excel Ex1, ArrayList<Excel> allExcel)
+	public ParametricCurve(ArrayList<Excel> allExcel)
 	{
-		ex1 = Ex1;
-		ex2 = Ex2;
-		ex3 = Ex3;
-		ex4 = Ex4;
 		allexcel = allExcel;
 	}
 	
+	
+	/*
+	 * Общая функция для построения прямых, используя формы 
+	 * Безье, Эрмита, В-сплайна
+	 */
 	public ArrayList<Excel> Calculation()
 	{	
 		NumberFormat formatter = new DecimalFormat("0.0##########");
+		
 		ArrayList<Excel> result = new ArrayList<Excel>();
-			
-		if(forStepExcel != null)
+		
+		
+		for(int i=0;i<forStepExcel.size();i++)
 		{
-			for(int i=0;i<forStepExcel.size();i++)
-			{
-				forStepExcel.get(i).setColor(Color.red);
-			}
+			/*
+			 * forStepExcel - массив, в котром хранятся все граничные точки,
+			 * которые окрашиваются в красный цвет
+			 */
+			forStepExcel.get(i).setColor(Color.red);
 		}
-		else
+		/*else
 		{
 			ex1.setColor(Color.red);
 			ex2.setColor(Color.red);
 			ex3.setColor(Color.red);
 			ex4.setColor(Color.red);
-		}
+		}*/
 			
-			Matrix Gnx = new Matrix(4,2);
+			Matrix Gnx = new Matrix(4,2); // Gnx - Вектор Эрмита, Безье или B-сплайна
 			Gnx.fillingMatrix(masGnx);
 			
-			Matrix Mn = new Matrix(4,4);
-			
+			Matrix Mn = new Matrix(4,4); // Mn - матрица Эрмита, Безье или B-сплайна
 			Mn.fillingMatrix(masMn);
 			
-			Matrix Cx;
+			/*
+			 *Cx = Mn * Gnx, то есть в матрицу Cx записывается
+			 *результат перемножения матрицы Mn и Gnx
+			*/
+			Matrix Cx; 
+			
 			if(matrixMultiplication(Mn,Gnx) != null)
 			{
-				Cx = matrixMultiplication(Mn,Gnx);
+				Cx = matrixMultiplication(Mn,Gnx); // результат перемножения Gnx и Mn
 				
 				double step = 0.0;
 				
-				if(forStepExcel != null)
-				{
-					step = getStep(forStepExcel.get(0),forStepExcel.get(1),forStepExcel.get(2),forStepExcel.get(3));
-				}
-				else{
-					step = getStep(ex1,ex2,ex3,ex4);
-				}
-				
+				// определение шага изменения параметра t[0,1] с помощью функции getStep()
+				step = getStep(forStepExcel.get(0),forStepExcel.get(1),forStepExcel.get(2),forStepExcel.get(3)); 
+
 				for(double i=0; i<=1; i+=step)
 				{
+					// T - [t^3 t^2 t^1 1] , где t - это параметр, который изменяется с шагом step от 0 до 1
 					Matrix T = new Matrix(1,4);
 					double masT[] = {factor*Double.parseDouble(formatter.format(Math.pow(i,3)).replace(',', '.')),
 							factor*Double.parseDouble(formatter.format(Math.pow(i,2)).replace(',', '.')),
@@ -77,33 +81,34 @@ public class ParametricCurve {
 					if(matrixMultiplication(T,Cx) != null)
 					{
 						Matrix Pt;
+						/*
+						 * Pt - содержит результат вычисления полинома, описывающего сегмент кривой
+						 * вычисляется как произведенеия матриц T на Cx
+						 */
 						Pt = matrixMultiplication(T,Cx);
 						//Pt.showMatrix();
+						
 
 						
 						if(Pt.getColumns() == 1 && Pt.getRows() == 2)
 						{
+							// добавления в массив точек, полученных в результате вычисления полинома
 							result.add(new Excel((int)Pt.getEl(0, 0),(int)Pt.getEl(0, 1),Color.black));
 						}
 					}
 				}
 				
-				if(forStepExcel != null)
-				{
-					result.addAll(forStepExcel);
-				}
-				else
-				{
-					result.add(ex1);
-					result.add(ex2);
-					result.add(ex3);
-					result.add(ex4);
-				}
+				// добавления граничных точек в результирующий массив
+				result.addAll(forStepExcel); 
 			}
 		
 		return result;
 	}
-
+	
+	/*
+	 * Функция, предназаначенная для вычисления
+	 * результата перемножения любых двух матриц
+	 */
 	public static Matrix matrixMultiplication(Matrix A, Matrix B)
 	{
 		Matrix C = new Matrix(A.getColumns(),B.getRows());
@@ -135,6 +140,10 @@ public class ParametricCurve {
 		return null;
 	}
 	
+	/*
+	 * Функция для вычисления шага 
+	 * для параметра t[0,1]
+	 */
 	public static double getStep(Excel e1,Excel e2,Excel e3,Excel e4)
 	{
 		double step = 0;
@@ -149,6 +158,10 @@ public class ParametricCurve {
 		
 		for(int i=0;i<list.size();i++)
 		{
+			/*
+			 * Выбор максимального расстояния между двумя
+			 * любыми граничными точками
+			 */
 			if(i + 1 != list.size())
 			{
 				Excel point1 = list.get(i);
@@ -162,30 +175,26 @@ public class ParametricCurve {
 			}
 		}
 		
-		step = (1.0/max_size)/5.0;
+		/*
+		 * Вычисления шага путем деления 
+		 * 1 на максимальное расстояния между точками.
+		 * Делим наш шаг еще на 3, для уменьшения нашего шага,
+		 * для того, чтобы не было разрывов при построении 
+		 * кривой.
+		 */
+		step = (1.0/max_size)/getDivider();
 		
 		return step;
 	}
 	
+	/*
+	 * Функция для вычисления координат 
+	 * вектора касательных, только для 
+	 * формы Эрмита
+	 */
 	public static Point rVector(Excel Ex1,Excel Ex2)
 	{
 		 return new Point(Ex2.getX() - Ex1.getX(), Ex2.getY() - Ex1.getY());	
-	}
-	
-	public static Excel getEx1() {
-		return ex1;
-	}
-
-	public static Excel getEx2() {
-		return ex2;
-	}
-
-	public static Excel getEx3() {
-		return ex3;
-	}
-
-	public static Excel getEx4() {
-		return ex4;
 	}
 
 	public static void setMasGnx(double[] masGnx) {
@@ -216,13 +225,18 @@ public class ParametricCurve {
 		ParametricCurve.forStepExcel = forStepExcel;
 	}
 
+	public static double getDivider() {
+		return divider;
+	}
+
+	public static void setDivider(double divider) {
+		ParametricCurve.divider = divider;
+	}
+
 	private static ArrayList<Excel> allexcel;
 	private static ArrayList<Excel> forStepExcel;
-	private static Excel ex1;
-	private static Excel ex2;
-	private static Excel ex3;
-	private static Excel ex4;
 	private static double masGnx[];
 	private static double masMn[];
 	private static double factor;
+	private static double divider;
 }
