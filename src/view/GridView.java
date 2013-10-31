@@ -7,15 +7,14 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
-import line.AbstractLine;
 import model.*;
 import javax.swing.JPanel;
 
+import shape.Shape;
+import shape.lines.AbstractLine;
+
 public class GridView extends JPanel{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	//Массив ячеек, которые будут отрисовываться пошагово
 	private ArrayList<Excel> steplyArray;
@@ -29,10 +28,9 @@ public class GridView extends JPanel{
 	double w;
 	//Высота экрана
 	double h;
-	//Массив линий
-	private ArrayList<AbstractLine> lines;
+	//Массив фигур
+	private ArrayList<Shape> figures;
 
-	
 	public GridView()
 	{
 		step = 1;
@@ -46,7 +44,7 @@ public class GridView extends JPanel{
 	    coloredEx = new ArrayList<Excel>();
 	    steplyArray = new ArrayList<Excel>();
 	    ClickedController = new ClickedExController();
-	    lines = new ArrayList<AbstractLine>();
+	    figures = new ArrayList<Shape>();
 	}
 		
 	  protected void paintComponent(Graphics g) {
@@ -54,8 +52,8 @@ public class GridView extends JPanel{
 	        g2d.setColor(Color.white);
 	        
 	        Dimension d = new Dimension();
-	        d.height= 768 * step;	
-	        d.width= 1366* step;	
+	        d.height= (int) (h * step);	
+	        d.width= (int) (w* step);	
 	        this.setPreferredSize(d);				
 	        this.revalidate();
 	      //Вертикальные линии	        
@@ -109,9 +107,9 @@ public class GridView extends JPanel{
 	        	 }
 	         }
 	        //Отрисовка фигур 
-	         for (AbstractLine line: lines)
+	         for (Shape figure: figures)
 	         {
-	        	 ArrayList<Excel>colored = line.getColoredExes();
+	        	 ArrayList<Excel>colored = figure.getColoredExes();
 	        	 
 	        	 for(Excel ex: colored)
 		         {
@@ -213,7 +211,7 @@ public class GridView extends JPanel{
 		  coloredEx.clear();
 		  steplyArray.clear();
 		  ClickedController.clear();
-		  lines.clear();
+		  figures.clear();
 	  } 
 	  
 	  public Excel getClickedEx()
@@ -235,15 +233,15 @@ public class GridView extends JPanel{
 		  Excel begin = new Excel(x1,y1);
 		  Excel end = new Excel(x2, y2);
 		  
-		  for(AbstractLine line: lines)
+		  for(Shape figure: figures)
 		  {
-			  line.move(begin, end);
+			  figure.move(begin, end);
 		  }
 	  }
 	  
-	  public void addLine(AbstractLine line)
+	  public void addFugure(Shape figure)
 	  {
-		  lines.add(line);
+		  figures.add(figure);
 	  }
 	  //возвращает все кликнутые ячейки
 	  public ArrayList<Excel> getAllClicked()
