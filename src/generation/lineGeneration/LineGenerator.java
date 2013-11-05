@@ -18,7 +18,6 @@ public class LineGenerator {
 		int y1 = ex2.getY();
 		
 		result.add(new Excel(ex1.getX(), ex1.getY(), Color.black));
-		result.add(new Excel(ex2.getX(), ex2.getY(), Color.black));
 		
 			int length;
 			int modx = (int) (x2 - x1); // Вычиляем разность координат точек по оси Х
@@ -97,6 +96,8 @@ public class LineGenerator {
 				i++;
 				}
 			}
+			
+			result.add(new Excel(ex2.getX(), ex2.getY(), Color.black));
 		return result;		
 	}
 
@@ -138,7 +139,6 @@ public class LineGenerator {
 			dy = Math.abs(dy); //поэтому необходимо сделать dx = |dx|; dy = |dy|
 			
 			result.add(new Excel(ex1.getX(), ex1.getY(), Color.black));
-			result.add(new Excel(ex2.getX(), ex2.getY(), Color.black));
 			
 			if(dx > dy)			//определяем наклон отрезка:
 			{
@@ -225,9 +225,7 @@ public class LineGenerator {
 
 			    result.add(new Excel(x1,y1, Color.black));
 			    												// а теперь вторую
-			    double intery = y1 + gradient;
-
-			    result.add(new Excel(x2,y2, Color.black));   
+			    double intery = y1 + gradient;  
 			    
 			 // т.к осью приращения была выбрана ось x, то идя по ней от т. x1 до т. х2, используя приращение, выстраивается линия
 			 // Исопльзуя значение отклонения пикселя от предполагаемой линии, регулируется интенсивность цвета
@@ -265,9 +263,8 @@ public class LineGenerator {
 			    	interx += gradient;
 			    }
 			  }
-			
-			
-	         					
+
+			   result.add(new Excel(x2,y2, Color.black));   					
 		return result;
 		
 	}

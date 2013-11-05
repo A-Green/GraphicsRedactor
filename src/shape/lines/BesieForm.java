@@ -19,13 +19,11 @@ ArrayList<Excel> allex = new ArrayList<Excel>();
 	}
 	@Override
 	public ArrayList<Excel> getColoredExes() {
-		// TODO Auto-generated method stub
 		return coloredEx;
 	}
 
 	@Override
 	public void move(Excel start, Excel finish) {
-		// TODO Auto-generated method stub
 		for(int i=0;i<allex.size();i++)
 		{
 			if (start.getX() == allex.get(i).getX() && start.getY() == allex.get(i).getY())			
@@ -37,13 +35,24 @@ ArrayList<Excel> allex = new ArrayList<Excel>();
 			}
 		}
 
+		dragg(start, finish);
 	}
+
 
 	@Override
 	protected void setColoredExes() {
-		// TODO Auto-generated method stub
 		ParametricCurve besie = new BesieCurve(allex);
 		coloredEx = besie.Calculation();
+	}
+	
+	public void dragg(Excel start, Excel finish)
+	{
+		
+	}
+	
+	public void rotate(int angle)
+	{
+		
 	}
 
 }

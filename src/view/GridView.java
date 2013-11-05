@@ -11,7 +11,6 @@ import model.*;
 import javax.swing.JPanel;
 
 import shape.Shape;
-import shape.lines.AbstractLine;
 
 public class GridView extends JPanel{
 
@@ -95,7 +94,7 @@ public class GridView extends JPanel{
 	        		 g2d.fillPolygon(x,y,4);
 	        	 }
 	         }
-	         //ќтрисовка дополнительных закрашенных €чеек
+	         //ќтрисовка дополнительных закрашенных €чеек (дл€ пошагового)
 	         for(Excel ex: coloredEx)
 	         {
 	        	 if (ex.isColored())
@@ -115,8 +114,8 @@ public class GridView extends JPanel{
 		         {
 		        	 if (ex.isColored())
 		        	 {    		 
-		        		 int x[] = {ex.getX() * step + step,ex.getX() * step ,ex.getX() * step,ex.getX()* step + step};
-		        		 int y[] = {ex.getY()* step,ex.getY()* step,ex.getY()* step + step,ex.getY()* step + step};
+		        		 int x[] = {ex.getX()/ex.getZ() * step + step,ex.getX()/ex.getZ() * step ,ex.getX()/ex.getZ() * step,ex.getX()/ex.getZ()* step + step};
+		        		 int y[] = {ex.getY()/ex.getZ()* step,ex.getY()/ex.getZ()* step,ex.getY()/ex.getZ()* step + step,ex.getY()/ex.getZ()* step + step};
 		        		 g2d.setColor(ex.getColor());
 		        		 g2d.fillPolygon(x,y,4);
 		        	 }
@@ -127,7 +126,7 @@ public class GridView extends JPanel{
 	    }
 
 	  //«аполн€ет массив пошаговой отрисовки
-	  public void setSteplyArray(AbstractLine line)
+	  public void setSteplyArray(Shape line)
 	  {
 		  ArrayList<Excel> arr = line.getColoredExes();
 		  for (Excel ex: arr)
@@ -236,6 +235,14 @@ public class GridView extends JPanel{
 		  for(Shape figure: figures)
 		  {
 			  figure.move(begin, end);
+		  }
+	  }
+	  
+	  public void rotate(int angle)
+	  {
+		  for(Shape figure: figures)
+		  {
+			  figure.rotate(angle);
 		  }
 	  }
 	  

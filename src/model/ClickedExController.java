@@ -43,12 +43,12 @@ public class ClickedExController {
 	{
 		exes.clear();
 	}
-	
+	// возвращает все €чейки
 	public ArrayList<Excel> getClickedExes()
 	{	
 		return exes;
 	}
-	
+	// возвращает все €чейки и удал€ет из exes
 	public ArrayList<Excel> popAll()
 	{	
 		ArrayList<Excel> result = new ArrayList<Excel>(exes);

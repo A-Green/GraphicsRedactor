@@ -25,19 +25,40 @@ public class BrezenhemLine extends AbstractLine{
 		{
 			begin = finish;
 			setColoredExes();
+			return;
 		}
 	
 	if (start.getX() == end.getX() && start.getY() == end.getY())
 		{
 		end = finish;
 		setColoredExes();
+		return;
 		}
-		
+	
+
+	for(Excel ex: coloredEx)
+	{
+		if (ex.equals(start))
+		{
+			dragg(start, finish);
+			setColoredExes();	
+			break;
+		}
+	}
+
 	}
 
 	@Override
 	protected void setColoredExes() {
 		coloredEx = LineGenerator.Brezenhem(begin, end);
 	}
+	
+	@Override
+	public void rotate(int angle)
+	{
+		super.rotate(angle);
+		setColoredExes();
+	}
+
 
 }

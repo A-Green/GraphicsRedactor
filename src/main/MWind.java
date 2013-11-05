@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import model.Excel;
+import shape.dimensional.Cube;
 import shape.lines.AntiAliasingLine;
 import shape.lines.BSplaynForm;
 import shape.lines.BesieForm;
@@ -109,9 +110,8 @@ public class MWind extends JFrame {
 		// уменьшение масштаба по нажатию кнопки '-'
 		zoomOutBotton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gridView.setStep(gridView.getStep() - 1);	
+				gridView.rotate(-5);
 				gridView.repaint();
-				
 			}
 		});
 		
@@ -122,7 +122,7 @@ public class MWind extends JFrame {
 		bottonPanel.add(zoomInBotton);
 		zoomInBotton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				gridView.setStep(gridView.getStep() + 1);
+				gridView.rotate(5);
 				gridView.repaint();
 			}
 		});
@@ -442,6 +442,8 @@ public class MWind extends JFrame {
 										cubeItem.addMouseListener(new MouseAdapter() {
 											@Override
 											public void mouseClicked(MouseEvent arg0) {
+												Cube cube = new Cube();
+												gridView.addFugure(cube);
 											}
 										});
 										mnd.add(cubeItem);
@@ -508,52 +510,20 @@ public class MWind extends JFrame {
 		//передвижение мыши
 		 gridView.addMouseMotionListener(new MouseMotionListener(){
 				public void mouseDragged(MouseEvent e) {
-					// TODO Auto-generated method stub
-					//x = 10;
+
 					int x = e.getX() / gridView.getStep();
 					int y = e.getY() / gridView.getStep();
-					//if ( x != clickedX && y != clickedY )
+				
+					if (clickedX != x || clickedY != y)
+					{
 					gridView.moveLine(clickedX, clickedY, x, y);
 					clickedX = x; 
 					clickedY = y;
+					}
 					gridView.repaint();
 					
 				}
-				public void mouseMoved(MouseEvent event) {
-//<<<<<<< HEAD
-					/*if(clearCheckBox.getState() == true)
-					{
-					if (event.getX()<grid.getSize()*grid.getStep() && event.getY()<grid.getSize()*grid.getStep())
-					{
-						System.out.println("!!!!!!!!!!!!!!!!!!!");
-						int x = event.getX() / grid.getStep();
-						int y = event.getY() / grid.getStep();
-						if (grid.getExcel(x, y).isColored() == true) 
-						{
-							
-								grid.getExcel(x, y).setColored(false);
-//=======
-						int x = event.getX() / gridView.getStep();
-						int y = event.getY() / gridView.getStep();
-						Excel ex = new Excel(x,y,Color.black);
-						if (gridView.contains(ex)) 
-						{
-							if(clearCheckBox.getState() == true)
-							{
-								gridView.removeEx(ex);
-//>>>>>>> 87d3a94f72943394f7a48b833084dfcc5d6407a0
-								gridView.repaint();
-								System.out.println("CLEAR");
-						}
-//<<<<<<< HEAD
-					}
-					}
-				}
-		    
-//=======
-					}	    
-//>>>>>>> 87d3a94f72943394f7a48b833084dfcc5d6407a0
-		    */}
+				public void mouseMoved(MouseEvent event) {}
 				});
 		
 		

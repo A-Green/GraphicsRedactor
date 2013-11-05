@@ -37,6 +37,15 @@ public class Excel {
 		setZ(z);
 		setColor(col);
 	}
+	
+	public Excel(int x, int y, int z, int t, Color col)
+	{
+		setX(x);
+		setY(y);
+		setT(t);
+		setZ(z);
+		setColor(col);
+	}
 
 	public Color getColor()
 	{
@@ -88,7 +97,7 @@ public class Excel {
 	}
 	public void setColored(boolean colored) {
 		this.colored = colored;
-		if(!colored) this.color = Color.black; // установить цвет по умолчанию
+		if(!colored) this.color = Color.white; // установить цвет по умолчанию
 	}
 	
 	public void setColored(Color col) {
@@ -101,5 +110,12 @@ public class Excel {
 		return "X:" + x + " Y:" + y + " Color: " + ((colored)? getColor().toString() : "no");
 	}
 	
+	public boolean equals(Excel ex)
+	{
+		if (getX() != ex.getX() || getY() != ex.getY() || getY() != ex.getY() || getT() != ex.getT())
+		return false;
+		
+		return true;
+	}
 	
 }

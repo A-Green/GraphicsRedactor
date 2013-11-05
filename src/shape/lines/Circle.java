@@ -4,6 +4,8 @@ import generation.circleGeneration.CircleGenerator;
 
 import java.util.ArrayList;
 
+import transformationTools.planarTransform.PlanarTransform;
+
 
 import model.Excel;
 
@@ -29,12 +31,41 @@ public class Circle extends AbstractLine {
 			{
 			begin = end;
 			setColoredExes();
+			return;
 			}
+		
+		for(Excel ex: coloredEx)
+		{
+			if (ex.equals(start))
+			{
+				dragg(start, end);
+				setColoredExes();	
+				break;
+			}
+		}
+
 	}
 
 	@Override
 	protected void setColoredExes() {
 		coloredEx = CircleGenerator.circle(begin, R);
+	}
+	
+	@Override
+	public void dragg(Excel start, Excel finish)
+	{
+		int Dx = finish.getX() - start.getX();
+		int Dy = finish.getY() - start.getY();
+		
+		begin = PlanarTransform.move(Dx, Dy, begin);
+		
+	}
+	
+	@Override
+	public void rotate(int angle)
+	{
+		begin = PlanarTransform.rotate(angle, begin);
+		setColoredExes();
 	}
 
 }

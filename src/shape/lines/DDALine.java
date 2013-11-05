@@ -21,25 +21,42 @@ public class DDALine extends AbstractLine {
 	}
 	@Override
 	public void move(Excel start, Excel finish) {
-		// TODO Auto-generated method stub
-		
+
 		if (start.getX() == begin.getX() && start.getY() == begin.getY())			
 			{
 				begin = finish;
 				setColoredExes();
+				return;
 			}
 		
 		if (start.getX() == end.getX() && start.getY() == end.getY())
 			{
 			end = finish;
 			setColoredExes();
+			return;
 			}
+		
+		for(Excel ex: coloredEx)
+		{
+			if (ex.equals(start))
+			{
+				dragg(start, finish);
+				setColoredExes();	
+				break;
+			}
+		}
+
 	}
 
 	@Override
 	protected void setColoredExes() {
-		// TODO Auto-generated method stub
 		coloredEx = LineGenerator.DDA(begin, end);
 	}
-		
+	
+	@Override
+	public void rotate(int angle)
+	{
+		super.rotate(angle);
+		setColoredExes();
+	}
 }

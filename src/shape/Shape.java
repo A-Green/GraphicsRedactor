@@ -11,7 +11,10 @@ public abstract class Shape {
 	public abstract ArrayList<Excel> getColoredExes();
 
 	public abstract void move(Excel start, Excel end);
-	
+		
 	protected abstract void setColoredExes();
+	
+	public abstract void rotate(int anlge);
 
+	protected abstract void dragg(Excel start, Excel end);
 }

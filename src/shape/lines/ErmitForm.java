@@ -5,6 +5,8 @@ import generation.curveGeneration.ParametricCurve;
 
 import java.util.ArrayList;
 
+import transformationTools.planarTransform.PlanarTransform;
+
 import model.Excel;
 
 public class ErmitForm extends AbstractLine {
@@ -18,13 +20,11 @@ ArrayList<Excel> allex = new ArrayList<Excel>();
 	}
 	@Override
 	public ArrayList<Excel> getColoredExes() {
-		// TODO Auto-generated method stub
 		return coloredEx;
 	}
 
 	@Override
 	public void move(Excel start, Excel finish) {
-		// TODO Auto-generated method stub
 		for(int i=0;i<allex.size();i++)
 		{
 			if (start.getX() == allex.get(i).getX() && start.getY() == allex.get(i).getY())			
@@ -36,13 +36,29 @@ ArrayList<Excel> allex = new ArrayList<Excel>();
 			}
 		}
 
+		for(Excel ex: coloredEx)
+		{
+			if (ex.equals(start))
+			{	System.out.println("yes");
+				dragg(start,finish);
+				break;
+			}
+		}
 	}
 
 	@Override
 	protected void setColoredExes() {
-		// TODO Auto-generated method stub
 		ParametricCurve ermit = new ErmitCurve(allex);
 		coloredEx = ermit.Calculation();
 	}
 
+	public void dragg(Excel start, Excel finish)
+	{
+
+	}
+	
+	public void rotate(int angle)
+	{
+		
+	}
 }

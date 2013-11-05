@@ -4,6 +4,8 @@ import generation.parabolaGeneration.ParabolaGenerator;
 
 import java.util.ArrayList;
 
+import transformationTools.planarTransform.PlanarTransform;
+
 
 import model.Excel;
 
@@ -21,24 +23,40 @@ public class Parabola extends AbstractLine{
 	}
 	@Override
 	public ArrayList<Excel> getColoredExes() {
-		// TODO Auto-generated method stub
+
 		return coloredEx;
 	}
 
 	@Override
 	public void move(Excel start, Excel end) {
-		// TODO Auto-generated method stub
-		if (start.getX() == begin.getX() && start.getY() == begin.getY())			
+
+		for(Excel ex: coloredEx)
+		{
+			if (ex.equals(start))
 			{
-			begin = end;
-			setColoredExes();
+				dragg(start, end);
+				setColoredExes();	
+				break;
 			}
+		}
 	}
 	@Override
 	protected void setColoredExes() {
-		// TODO Auto-generated method stub
+
 		coloredEx = ParabolaGenerator.parabola(begin, p, size);
 	}
-
-
+	
+	public void dragg(Excel start, Excel finish)
+	{
+		int Dx = finish.getX() - start.getX();
+		int Dy = finish.getY() - start.getY();
+		
+		begin = PlanarTransform.move(Dx,Dy,begin);
+	}
+	
+	@Override
+	public void rotate(int angle)
+	{
+		
+	}
 }
