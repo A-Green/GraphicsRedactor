@@ -5,9 +5,8 @@ import generation.cubeGeneration.CubeGenerator;
 import java.util.ArrayList;
 
 import model.Excel;
-import shape.Shape;
 
-public class Cube extends Shape {
+public class Cube extends DimensionalObject {
 
 	public Cube()
 	{
