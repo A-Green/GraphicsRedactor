@@ -116,6 +116,9 @@ public class GridView extends JPanel{
 		        	 {    		 
 		        		 int x[] = {ex.getX()/ex.getZ() * step + step,ex.getX()/ex.getZ() * step ,ex.getX()/ex.getZ() * step,ex.getX()/ex.getZ()* step + step};
 		        		 int y[] = {ex.getY()/ex.getZ()* step,ex.getY()/ex.getZ()* step,ex.getY()/ex.getZ()* step + step,ex.getY()/ex.getZ()* step + step};
+		        		// int x[] = {ex.getX() * step + step,ex.getX() * step ,ex.getX() * step,ex.getX()* step + step};
+			        	// int y[] = {ex.getY()* step,ex.getY()* step,ex.getY()* step + step,ex.getY()* step + step};
+			        		 
 		        		 g2d.setColor(ex.getColor());
 		        		 g2d.fillPolygon(x,y,4);
 		        	 }

@@ -2,21 +2,20 @@ package transformationTools.dimensionalTrasform;
 
 import generation.curveGeneration.Matrix;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import model.Excel;
 
-class Scalign {
-	
-	public static ArrayList<Excel> scale(int coeff, ArrayList<Excel> toScale)
+class Move {
+
+	public static ArrayList<Excel> move(int a, int b, int c, ArrayList<Excel> toScale)
 	{
 		 ArrayList<Excel> result = new  ArrayList<Excel>();
 		 
-		 double matrix[][] = {   {coeff, 0,0,0},
-								 {0, coeff,0,0},
-								 {0, 0,coeff,0},
-								 {0, 0,  0,  1}
+		 double matrix[][] = {   {1, 0,0,a},
+								 {0, 1,0,b},
+								 {0, 0,1,c},
+								 {0, 0,0,1}
 							}; 
 		 
 		 Matrix scaleMatrix = new Matrix(4,4);

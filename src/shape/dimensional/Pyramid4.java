@@ -1,26 +1,22 @@
 package shape.dimensional;
 
-import generation.cubeGeneration.CubeGenerator;
+import generation.PyramidGenerator;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import model.Excel;
 import transformationTools.dimensionalTrasform.DimensionalTrasform;
 
-import model.Excel;
-
-public class Cube extends DimensionalObject {
+public class Pyramid4 extends DimensionalObject{
 
 	protected ArrayList<Excel> base = new ArrayList<Excel>(
-			Arrays.asList(  new Excel(-1,1,-1,Color.black),
-							new Excel(1,1,-1,Color.black),
+			Arrays.asList(  new Excel(-1,-1,-1,Color.black),
 							new Excel(1,-1,-1,Color.black),
-							new Excel(-1,-1,-1,Color.black),
-							new Excel(-1,1,1,Color.black),
-							new Excel(1,1,1,Color.black),
-							new Excel(1,-1,1,Color.black),
-							new Excel(-1,-1,1,Color.black)));
+							new Excel(1,1,-1,Color.black),
+							new Excel(-1,1,-1,Color.black),
+							new Excel(0,0,1,Color.black)));
 	protected int side;
 	
 	public void setSide(int s)
@@ -33,7 +29,7 @@ public class Cube extends DimensionalObject {
 		return side;
 	}
 	
-	public Cube(int side)
+	public Pyramid4(int side)
 	{
 		setSide(side);
 		base = DimensionalTrasform.scale(side, base);
@@ -66,7 +62,7 @@ public class Cube extends DimensionalObject {
 
 	protected void setColoredExes() {
 		
-		coloredEx = CubeGenerator.generateCube(getSide(), base);
+		coloredEx = PyramidGenerator.generatePyramid4(getSide(), base);
 	}
 
 	@Override

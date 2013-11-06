@@ -104,7 +104,7 @@ public class LineGenerator {
 	
 	public static ArrayList<Excel> Brezenhem(Excel ex1, Excel ex2)
 	{
-		System.out.println("brezenhem");
+		//System.out.println("brezenhem");
 		ArrayList<Excel> result = new ArrayList<Excel>();		
 
 		if (ex1 == null || ex2 == null) return null;
@@ -309,7 +309,7 @@ public class LineGenerator {
 	
 	public static ArrayList<Excel> horizontalLine(int x1, int x2, int y)
 	{	
-		System.out.println("horizotal line");
+		//System.out.println("horizotal line");
 		ArrayList<Excel> result = new ArrayList<Excel>();
 		int x = (x1 > x2) ? x2 : x1;   // выбираем отправную точку, чтобы двигаться слева направо
 		int length = Math.abs(x1 - x2); // вычисляем длинну линии
@@ -322,7 +322,7 @@ public class LineGenerator {
 	
 	public static ArrayList<Excel> verticalalLine(int y1, int y2, int x)
 	{
-		System.out.println("vertical line");
+		//System.out.println("vertical line");
 		ArrayList<Excel> result = new ArrayList<Excel>();
 		int y = (y1 > y2) ? y2 : y1;     // выбираем отправную точку, чтобы двигаться снизу вверх
 		int length = Math.abs(y1 - y2); // вычисляем длину вертикальной линии
@@ -336,7 +336,7 @@ public class LineGenerator {
 	
 	public static ArrayList<Excel> diagonalLine(int x1, int y1, int x2, int y2)
 	{	
-		System.out.println("diagonal line");
+		//System.out.println("diagonal line");
 		ArrayList<Excel> result = new ArrayList<Excel>();	
 		int increm;
 		

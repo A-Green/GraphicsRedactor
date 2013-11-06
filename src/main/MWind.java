@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 
 import model.Excel;
 import shape.dimensional.Cube;
+import shape.dimensional.Pyramid4;
 import shape.lines.AntiAliasingLine;
 import shape.lines.BSplaynForm;
 import shape.lines.BesieForm;
@@ -442,11 +443,27 @@ public class MWind extends JFrame {
 										cubeItem.addMouseListener(new MouseAdapter() {
 											@Override
 											public void mouseClicked(MouseEvent arg0) {
-												Cube cube = new Cube();
+
+											}
+											@Override
+											public void mousePressed(MouseEvent arg0) {
+												Cube cube = new Cube(40);
 												gridView.addFugure(cube);
+												gridView.repaint();
 											}
 										});
 										mnd.add(cubeItem);
+										
+										JMenuItem menuItem = new JMenuItem("\u041F\u0438\u0440\u0430\u043C\u0438\u0434\u0430");
+										menuItem.addMouseListener(new MouseAdapter() {
+											@Override
+											public void mousePressed(MouseEvent arg0) {
+												Pyramid4 piramid = new Pyramid4(40);
+												gridView.addFugure(piramid);
+												gridView.repaint();
+											}
+										});
+										mnd.add(menuItem);
 		gridView.setLayout(new BoxLayout(gridView, BoxLayout.X_AXIS));
 		
 	//-----------------------------------------------------------------------------------------------------------------------------------
