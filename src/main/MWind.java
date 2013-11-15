@@ -18,6 +18,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -43,6 +45,10 @@ import shape.lines.DDALine;
 import shape.lines.ErmitForm;
 import shape.lines.Parabola;
 import view.GridView;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.JTextField;
 public class MWind extends JFrame {
 	
 	/**
@@ -53,6 +59,10 @@ public class MWind extends JFrame {
 	private PDialog p_dialog = null;
 	private int clickedX = 0;
 	private int clickedY = 0;
+	private JTextField rotateXAngle;
+	private JTextField rotateYAngle;
+	private JTextField rotateZAngle;
+	private JTextField rotateAllAngle;
 
 
 	/**
@@ -140,7 +150,7 @@ public class MWind extends JFrame {
 		bottonPanel.add(stepCheckBox);
 		
 		
-	//---------------------------------------ОТРЕЗКИ------------------------------------------------------------------
+//---------------------------------------ОТРЕЗКИ------------------------------------------------------------------
 		//меню отрезки
 		JMenu menuLines = new JMenu("\u041E\u0442\u0440\u0435\u0437\u043A\u0438");
 		menuBar.add(menuLines);
@@ -233,10 +243,9 @@ public class MWind extends JFrame {
 		JMenu menu = new JMenu("\u041A\u0440\u0438\u0432\u044B\u0435");
 		menuBar.add(menu);
 		
-
-	//-------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------
 		
-	//---------------------------------Линии второго порядка-------------------------------------------------------------------------
+//---------------------------------Линии второго порядка-------------------------------------------------------------------------
 		
 		//Окружность
 		JMenuItem menuCircle = new JMenuItem("\u041E\u043A\u0440\u0443\u0436\u043D\u043E\u0441\u0442\u044C");
@@ -324,9 +333,9 @@ public class MWind extends JFrame {
 				
 						
 						
-					//-------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------
 						
-					//---------------------------------Параметрические кривые-------------------------------------------------------------------------
+//---------------------------------Параметрические кривые-------------------------------------------------------------------------
 				
 				
 						JMenu curveMenu = new JMenu("\u041F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0438\u0435 \u043A\u0440\u0438\u0432\u044B\u0435");
@@ -438,16 +447,17 @@ public class MWind extends JFrame {
 										
 										JMenu mnd = new JMenu("3D \u0424\u0438\u0440\u0443\u0440\u044B");
 										menuBar.add(mnd);
+
+//---------------------------------------------------------------------------------------------------------------------------
+										
+										
+//--------------------------------- Объемные фигуры -------------------------------------------------------------------------
 										
 										JMenuItem cubeItem = new JMenuItem("\u041A\u0443\u0431");
 										cubeItem.addMouseListener(new MouseAdapter() {
 											@Override
-											public void mouseClicked(MouseEvent arg0) {
-
-											}
-											@Override
 											public void mousePressed(MouseEvent arg0) {
-												Cube cube = new Cube(40);
+												Cube cube = new Cube(100);
 												gridView.addFugure(cube);
 												gridView.repaint();
 											}
@@ -458,7 +468,7 @@ public class MWind extends JFrame {
 										menuItem.addMouseListener(new MouseAdapter() {
 											@Override
 											public void mousePressed(MouseEvent arg0) {
-												Pyramid4 piramid = new Pyramid4(40);
+												Pyramid4 piramid = new Pyramid4(100);
 												gridView.addFugure(piramid);
 												gridView.repaint();
 											}
@@ -484,6 +494,123 @@ public class MWind extends JFrame {
 		});
 		
 		popupMenu.add(popupClear);
+		
+		JPanel toolsPanel = new JPanel();
+		scrollPane.setRowHeaderView(toolsPanel);
+		GridBagLayout gbl_toolsPanel = new GridBagLayout();
+		gbl_toolsPanel.columnWidths = new int[]{89, 0};
+		gbl_toolsPanel.rowHeights = new int[]{23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_toolsPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_toolsPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		toolsPanel.setLayout(gbl_toolsPanel);
+		
+		JButton rotateXBtn = new JButton("RotateX");
+		rotateXBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				 Pattern p = Pattern.compile("^-?[0-9]+$"); 
+			     Matcher m = p.matcher(rotateXAngle.getText()); 
+			     if (m.matches()){
+			    	 gridView.rotateX(Integer.parseInt(rotateXAngle.getText()));
+			    	 gridView.repaint();
+			     }
+			
+			}
+		});
+		GridBagConstraints gbc_rotateXBtn = new GridBagConstraints();
+		gbc_rotateXBtn.insets = new Insets(0, 0, 5, 0);
+		gbc_rotateXBtn.gridx = 0;
+		gbc_rotateXBtn.gridy = 6;
+		toolsPanel.add(rotateXBtn, gbc_rotateXBtn);
+
+		rotateXAngle = new JTextField();
+		GridBagConstraints gbc_rotateXAngle = new GridBagConstraints();
+		gbc_rotateXAngle.insets = new Insets(0, 0, 5, 0);
+		gbc_rotateXAngle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rotateXAngle.gridx = 0;
+		gbc_rotateXAngle.gridy = 7;
+		toolsPanel.add(rotateXAngle, gbc_rotateXAngle);
+		rotateXAngle.setColumns(10);
+		
+		JButton rotateYBtn = new JButton("RotateY");
+		rotateYBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				 Pattern p = Pattern.compile("^-?[0-9]+$"); 
+			     Matcher m = p.matcher(rotateYAngle.getText()); 
+			     if (m.matches()){
+			    	 gridView.rotateY(Integer.parseInt(rotateYAngle.getText()));
+			    	 gridView.repaint();
+			     }
+			}
+		});
+		GridBagConstraints gbc_rotateYBtn = new GridBagConstraints();
+		gbc_rotateYBtn.insets = new Insets(0, 0, 5, 0);
+		gbc_rotateYBtn.gridx = 0;
+		gbc_rotateYBtn.gridy = 8;
+		toolsPanel.add(rotateYBtn, gbc_rotateYBtn);
+		
+		rotateYAngle = new JTextField();
+		GridBagConstraints gbc_rotateYAngle = new GridBagConstraints();
+		gbc_rotateYAngle.insets = new Insets(0, 0, 5, 0);
+		gbc_rotateYAngle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rotateYAngle.gridx = 0;
+		gbc_rotateYAngle.gridy = 9;
+		toolsPanel.add(rotateYAngle, gbc_rotateYAngle);
+		rotateYAngle.setColumns(10);
+		
+		JButton rotateZBtn = new JButton("RotateZ");
+		rotateZBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				 Pattern p = Pattern.compile("^-?[0-9]+$"); 
+			     Matcher m = p.matcher(rotateZAngle.getText()); 
+			     if (m.matches()){
+			    	 gridView.rotateZ(Integer.parseInt(rotateZAngle.getText()));
+			    	 gridView.repaint();
+			     }
+			}
+		});
+		GridBagConstraints gbc_rotateZBtn = new GridBagConstraints();
+		gbc_rotateZBtn.insets = new Insets(0, 0, 5, 0);
+		gbc_rotateZBtn.gridx = 0;
+		gbc_rotateZBtn.gridy = 10;
+		toolsPanel.add(rotateZBtn, gbc_rotateZBtn);
+		
+		rotateZAngle = new JTextField();
+		GridBagConstraints gbc_rotateZAngle = new GridBagConstraints();
+		gbc_rotateZAngle.insets = new Insets(0, 0, 5, 0);
+		gbc_rotateZAngle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rotateZAngle.gridx = 0;
+		gbc_rotateZAngle.gridy = 11;
+		toolsPanel.add(rotateZAngle, gbc_rotateZAngle);
+		rotateZAngle.setColumns(10);
+		
+		JButton rotateBnt = new JButton("Rotate");
+		rotateBnt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				 Pattern p = Pattern.compile("^-?[a-z0-9_-]+$"); 
+			     Matcher m = p.matcher(rotateAllAngle.getText()); 
+			     if (m.matches()){
+			    	 gridView.rotate(Integer.parseInt(rotateAllAngle.getText()));
+			    	 gridView.repaint();
+			     }
+			}
+		});
+		GridBagConstraints gbc_rotateBnt = new GridBagConstraints();
+		gbc_rotateBnt.insets = new Insets(0, 0, 5, 0);
+		gbc_rotateBnt.gridx = 0;
+		gbc_rotateBnt.gridy = 12;
+		toolsPanel.add(rotateBnt, gbc_rotateBnt);
+		
+		rotateAllAngle = new JTextField();
+		GridBagConstraints gbc_rotateAllAngle = new GridBagConstraints();
+		gbc_rotateAllAngle.fill = GridBagConstraints.HORIZONTAL;
+		gbc_rotateAllAngle.gridx = 0;
+		gbc_rotateAllAngle.gridy = 13;
+		toolsPanel.add(rotateAllAngle, gbc_rotateAllAngle);
+		rotateAllAngle.setColumns(10);
 				
 		// масштабирование по колесику мыши
 		gridView.addMouseWheelListener(new MouseWheelListener() {
@@ -514,7 +641,8 @@ public class MWind extends JFrame {
 						
 					gridView.repaint();
 					
-				}
+				}			
+				
 			}
 			
 			 public void mousePressed(MouseEvent e) {

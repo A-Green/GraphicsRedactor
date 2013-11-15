@@ -32,10 +32,10 @@ public class Rotate {
 			 line.setMatrix(l);
 			 
 			 Matrix multiplied = Matrix.matrixMultiplication(scaleMatrix, line);
-			 int x =(int) multiplied.getEl(0, 0);
-			 int y =(int) multiplied.getEl(1, 0);
-			 int z =(int) multiplied.getEl(2, 0);
-			 int t =(int) multiplied.getEl(3, 0);
+			 int x =(int) Math.round(multiplied.getEl(0, 0));
+			 int y =(int) Math.round(multiplied.getEl(1, 0));
+			 int z =(int) Math.round(multiplied.getEl(2, 0));
+			 int t =(int) Math.round(multiplied.getEl(3, 0));
 			 
 			 result.add(new Excel(x,y,z,t, ex.getColor()));
 		 }
@@ -46,10 +46,10 @@ public class Rotate {
 	public static ArrayList<Excel> rotateY(int angle, ArrayList<Excel> toScale)
 	{
 		 ArrayList<Excel> result = new  ArrayList<Excel>();
-		 
-		 double matrix[][] = {   {Math.cos(angle * Math.PI/180), 0, Math.sin(angle* Math.PI/180),0},
+		 		 
+		 double matrix[][] = {   {Math.cos(angle * Math.PI/180), 0, -Math.sin(angle* Math.PI/180),0},
 								 {0, 1 ,0, 0},
-								 {(-Math.sin(angle* Math.PI/180)),0, Math.cos(angle* Math.PI/180),0},
+								 {Math.sin(angle* Math.PI/180),0, Math.cos(angle* Math.PI/180),0},
 								 {0, 0,0,1}
 							}; 
 		 
@@ -67,14 +67,14 @@ public class Rotate {
 			 line.setMatrix(l);
 			 
 			 Matrix multiplied = Matrix.matrixMultiplication(scaleMatrix, line);
-			 int x =(int) multiplied.getEl(0, 0);
-			 int y =(int) multiplied.getEl(1, 0);
-			 int z =(int) multiplied.getEl(2, 0);
-			 int t =(int) multiplied.getEl(3, 0);
+			 
+			 int x =(int) Math.round(multiplied.getEl(0, 0));
+			 int y =(int) Math.round(multiplied.getEl(1, 0));
+			 int z =(int) Math.round(multiplied.getEl(2, 0));
+			 int t =(int) Math.round(multiplied.getEl(3, 0));
 			 
 			 result.add(new Excel(x,y,z,t, ex.getColor()));
 		 }
-		 
 		 return result;
 	}
 	
@@ -82,6 +82,7 @@ public class Rotate {
 	public static ArrayList<Excel> rotateZ(int angle, ArrayList<Excel> toScale)
 	{
 		 ArrayList<Excel> result = new  ArrayList<Excel>();
+		 
 		 
 		 double matrix[][] = {   {Math.cos(angle * Math.PI/180),  Math.sin(angle* Math.PI/180),0,0},								
 								 {(-Math.sin(angle* Math.PI/180)),Math.cos(angle* Math.PI/180),0,0},
@@ -103,14 +104,14 @@ public class Rotate {
 			 line.setMatrix(l);
 			 
 			 Matrix multiplied = Matrix.matrixMultiplication(scaleMatrix, line);
-			 int x =(int) multiplied.getEl(0, 0);
-			 int y =(int) multiplied.getEl(1, 0);
-			 int z =(int) multiplied.getEl(2, 0);
-			 int t =(int) multiplied.getEl(3, 0);
+			 int x =(int) Math.round(multiplied.getEl(0, 0));
+			 int y =(int) Math.round(multiplied.getEl(1, 0));
+			 int z =(int) Math.round(multiplied.getEl(2, 0));
+			 int t =(int) Math.round(multiplied.getEl(3, 0));
 			 
 			 result.add(new Excel(x,y,z,t, ex.getColor()));
 		 }
-		 
+
 		 return result;
 	}
 

@@ -5,7 +5,6 @@ import generation.curveGeneration.ParametricCurve;
 
 import java.util.ArrayList;
 
-import transformationTools.planarTransform.PlanarTransform;
 
 import model.Excel;
 

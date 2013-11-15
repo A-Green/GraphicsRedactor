@@ -1,7 +1,5 @@
 package transformationTools.dimensionalTrasform;
 
-import generation.curveGeneration.Matrix;
-
 import java.util.ArrayList;
 
 import model.Excel;

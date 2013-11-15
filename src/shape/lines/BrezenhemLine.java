@@ -12,6 +12,9 @@ public class BrezenhemLine extends AbstractLine{
 		begin = ex1;
 		end = ex2;
 		setColoredExes();
+		//center = coloredEx.get((coloredEx.size() / 2));
+		
+		
 	}
 
 	@Override
@@ -51,12 +54,13 @@ public class BrezenhemLine extends AbstractLine{
 	@Override
 	protected void setColoredExes() {
 		coloredEx = LineGenerator.Brezenhem(begin, end);
+		center = coloredEx.get((coloredEx.size() / 2));
 	}
 	
 	@Override
 	public void rotate(int angle)
 	{
-		super.rotate(angle);
+		super.rotate(angle, center);
 		setColoredExes();
 	}
 

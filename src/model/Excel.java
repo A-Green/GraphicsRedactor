@@ -107,7 +107,7 @@ public class Excel {
 	
 	public String toString()
 	{
-		return "X:" + x + " Y:" + y + " Color: " + ((colored)? getColor().toString() : "no");
+		return "X:" + x + " Y:" + y + " Z: " + z + " Color: " + ((colored)? getColor().toString() : "no");
 	}
 	
 	public boolean equals(Excel ex)
@@ -116,6 +116,11 @@ public class Excel {
 		return false;
 		
 		return true;
+	}
+	
+	public Excel projection()
+	{
+		return new Excel(x/z, y/z, 1,t, color);
 	}
 	
 }

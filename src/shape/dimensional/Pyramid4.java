@@ -19,6 +19,9 @@ public class Pyramid4 extends DimensionalObject{
 							new Excel(0,0,1,Color.black)));
 	protected int side;
 	
+	protected int Dx;
+	protected int Dy;
+	
 	public void setSide(int s)
 	{
 		side = s;
@@ -33,7 +36,7 @@ public class Pyramid4 extends DimensionalObject{
 	{
 		setSide(side);
 		base = DimensionalTrasform.scale(side, base);
-		base = DimensionalTrasform.move(2 * side, 2 * side, 0, base);
+		coloredEx = new ArrayList<Excel>();
 		setColoredExes();
 	}
 	@Override
@@ -45,16 +48,14 @@ public class Pyramid4 extends DimensionalObject{
 	@Override
 	public void move(Excel start, Excel finish) {
 		
-		int Dx = finish.getX() - start.getX();
-		int Dy = finish.getY() - start.getY();
-		System.out.println(Dx + "  " + Dy);
-		for (Excel ex: coloredEx)
+		for(Excel ex: coloredEx)
 		{
 			if (ex.getX() == start.getX() && ex.getY() == start.getY())
 			{
-				base = DimensionalTrasform.move(Dx, Dy, 1, base);
+				Dx += finish.getX() - start.getX();
+				Dy += finish.getY() - start.getY();
 				setColoredExes();
-				break;
+				 return;
 			}
 		}
 
@@ -62,16 +63,28 @@ public class Pyramid4 extends DimensionalObject{
 
 	protected void setColoredExes() {
 		
-		coloredEx = PyramidGenerator.generatePyramid4(getSide(), base);
+
+		 ArrayList<Excel> temp = PyramidGenerator.generatePyramid4(side, base);
+		 
+		 coloredEx.clear();
+		 
+		 for(Excel ex: temp)
+		 {
+			 ex.setX(ex.getX() + Dx);
+			 ex.setY(ex.getY() + Dy);
+			 coloredEx.add(ex);
+		 }
+		 
 	}
 
 	@Override
-	public void rotate(int anlge) {
+	public void rotate(int angle) {
 		
-		base = DimensionalTrasform.rotateY(15, base);
-		base = DimensionalTrasform.rotateX(15, base);
-		base = DimensionalTrasform.rotateZ(15, base);
-		
+		base = DimensionalTrasform.rotateX(angle, base);
+		setColoredExes();
+		base = DimensionalTrasform.rotateY(angle, base);
+		setColoredExes();
+		base = DimensionalTrasform.rotateZ(angle, base);	
 		setColoredExes();
 	}
 
@@ -80,5 +93,29 @@ public class Pyramid4 extends DimensionalObject{
 
 		
 	}
+
+	@Override
+	public void rotateX(int angle) {
+		
+		base = DimensionalTrasform.rotateX(angle, base);
+		setColoredExes();
+		
+	}
+
+	@Override
+	public void rotateY(int angle) {
+		
+		base = DimensionalTrasform.rotateY(angle, base);
+		setColoredExes();
+	}
+
+	@Override
+	public void rotateZ(int angle) {
+		
+		base = DimensionalTrasform.rotateZ(angle, base);	
+		setColoredExes();
+		
+	}
+
 
 }

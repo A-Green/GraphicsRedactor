@@ -11,6 +11,7 @@ import model.*;
 import javax.swing.JPanel;
 
 import shape.Shape;
+import shape.dimensional.DimensionalObject;
 
 public class GridView extends JPanel{
 
@@ -29,6 +30,8 @@ public class GridView extends JPanel{
 	double h;
 	//Ìàññèâ ôèãóğ
 	private ArrayList<Shape> figures;
+	
+	private Shape selectedFigure;
 
 	public GridView()
 	{
@@ -262,6 +265,48 @@ public class GridView extends JPanel{
 	  public ArrayList<Excel> popAllClicked()
 	  {
 		  return ClickedController.popAll();
+	  }
+	  
+	  public void setSelectedFigure(Shape fig)
+	  {
+		  selectedFigure = fig;
+	  }
+	  
+	  public Shape getSelectedFigure(){
+	  return selectedFigure;
+	  }
+	  
+	  public void rotateX(int angle){
+		  //ÓÓÓÓÓÓÓÓÓÆÆÆÀÀÀÑÑÑÑÑÑÍÎ!!!ïåğåäåëàòü!!! 
+		  int a;
+		  for (Shape figure: figures)
+		  {
+			 if(figure.getClass().toString().contains("dimensional")){
+				 ((DimensionalObject) figure).rotateX(angle);
+			 }
+		  }
+	  }
+	  
+	  public void rotateY(int angle){
+		  //ÓÓÓÓÓÓÓÓÓÆÆÆÀÀÀÑÑÑÑÑÑÍÎ!!!ïåğåäåëàòü!!! 
+		  int a;
+		  for (Shape figure: figures)
+		  {
+			 if(figure.getClass().toString().contains("dimensional")){
+				 ((DimensionalObject) figure).rotateY(angle);
+			 }
+		  }
+	  }
+	  
+	  public void rotateZ(int angle){
+		  //ÓÓÓÓÓÓÓÓÓÆÆÆÀÀÀÑÑÑÑÑÑÍÎ!!!ïåğåäåëàòü!!! 
+		  int a;
+		  for (Shape figure: figures)
+		  {
+			 if(figure.getClass().toString().contains("dimensional")){
+				 ((DimensionalObject) figure).rotateZ(angle);
+			 }
+		  }
 	  }
 	  
 

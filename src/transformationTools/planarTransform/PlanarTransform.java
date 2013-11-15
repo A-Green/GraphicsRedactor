@@ -10,9 +10,9 @@ public class PlanarTransform{
 		return Move.move(a, b, toMove);
 	}
 	//поворачивает
-	public static Excel rotate(int f, Excel toRotate)
+	public static Excel rotate(int f, Excel toRotate, Excel center)
 	{
-		return Rotate.rotate(f, toRotate);
+		return Rotate.rotate(f, toRotate, center);
 	}
 		
 }

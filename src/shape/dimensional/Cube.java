@@ -11,7 +11,7 @@ import transformationTools.dimensionalTrasform.DimensionalTrasform;
 import model.Excel;
 
 public class Cube extends DimensionalObject {
-
+	
 	protected ArrayList<Excel> base = new ArrayList<Excel>(
 			Arrays.asList(  new Excel(-1,1,-1,Color.black),
 							new Excel(1,1,-1,Color.black),
@@ -21,8 +21,10 @@ public class Cube extends DimensionalObject {
 							new Excel(1,1,1,Color.black),
 							new Excel(1,-1,1,Color.black),
 							new Excel(-1,-1,1,Color.black)));
-	protected int side;
-	
+	protected int side;		
+	protected int Dx = 0;
+	protected int Dy = 0;
+		
 	public void setSide(int s)
 	{
 		side = s;
@@ -37,7 +39,7 @@ public class Cube extends DimensionalObject {
 	{
 		setSide(side);
 		base = DimensionalTrasform.scale(side, base);
-		base = DimensionalTrasform.move(2 * side, 2 * side, 0, base);
+		coloredEx = new ArrayList<Excel>();
 		setColoredExes();
 	}
 	@Override
@@ -49,35 +51,45 @@ public class Cube extends DimensionalObject {
 	@Override
 	public void move(Excel start, Excel finish) {
 		
-		int Dx = finish.getX() - start.getX();
-		int Dy = finish.getY() - start.getY();
-		System.out.println(Dx + "  " + Dy);
-		for (Excel ex: coloredEx)
+		for(Excel ex: coloredEx)
 		{
 			if (ex.getX() == start.getX() && ex.getY() == start.getY())
 			{
-				base = DimensionalTrasform.move(Dx, Dy, 1, base);
-				setColoredExes();
-				break;
+			 Dx += finish.getX() - start.getX();
+			 Dy += finish.getY() - start.getY();		 
+			 setColoredExes();
+			 return;
 			}
 		}
-
+		
 	}
 
 	protected void setColoredExes() {
 		
-		coloredEx = CubeGenerator.generateCube(getSide(), base);
+		 ArrayList<Excel> temp = CubeGenerator.generateCube(side, base, center);
+		 
+		 coloredEx.clear();
+		 
+		 for(Excel ex: temp)
+		 {
+			 ex.setX(ex.getX() + Dx);
+			 ex.setY(ex.getY() + Dy);
+			 coloredEx.add(ex);
+		 }
 	}
 
 	@Override
-	public void rotate(int anlge) {
+	public void rotate(int angle) {
+
 		
-		base = DimensionalTrasform.rotateY(15, base);
-		base = DimensionalTrasform.rotateX(15, base);
-		base = DimensionalTrasform.rotateZ(15, base);
-		
+		base = DimensionalTrasform.rotateX(angle, base);
+		setColoredExes();
+		base = DimensionalTrasform.rotateY(angle, base);
+		setColoredExes();
+		base = DimensionalTrasform.rotateZ(angle, base);	
 		setColoredExes();
 	}
+	
 
 	@Override
 	protected void dragg(Excel start, Excel end) {
@@ -85,4 +97,28 @@ public class Cube extends DimensionalObject {
 		
 	}
 
+	@Override
+	public void rotateX(int angle) {
+		
+		base = DimensionalTrasform.rotateX(angle, base);
+		setColoredExes();
+		
+	}
+
+	@Override
+	public void rotateY(int angle) {
+		
+		base = DimensionalTrasform.rotateY(angle, base);
+		setColoredExes();
+	}
+
+	@Override
+	public void rotateZ(int angle) {
+		
+		base = DimensionalTrasform.rotateZ(angle, base);	
+		setColoredExes();
+		
+	}
+
+	
 }

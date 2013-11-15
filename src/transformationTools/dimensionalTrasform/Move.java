@@ -12,10 +12,10 @@ class Move {
 	{
 		 ArrayList<Excel> result = new  ArrayList<Excel>();
 		 
-		 double matrix[][] = {   {1, 0,0,a},
-								 {0, 1,0,b},
-								 {0, 0,1,c},
-								 {0, 0,0,1}
+		 double matrix[][] = {   {1, 0,0,0},
+								 {0, 1,0,0},
+								 {0, 0,1,0},
+								 {a, b,c,1}
 							}; 
 		 
 		 Matrix scaleMatrix = new Matrix(4,4);
@@ -23,19 +23,19 @@ class Move {
 		 
 		 for (Excel ex: toScale)
 		 {
-			 double l[][] = {{ex.getX()}, 
-							 {ex.getY()}, 
-							 {ex.getZ()}, 
-							 {ex.getT()}
+			 double l[][] = {{ex.getX(), 
+							 ex.getY(), 
+							 ex.getZ(), 
+							 ex.getT()}
 					 };
-			 Matrix line = new Matrix(4,1);
+			 Matrix line = new Matrix(1,4);
 			 line.setMatrix(l);
 			 
-			 Matrix multiplied = Matrix.matrixMultiplication(scaleMatrix, line);
-			 int x =(int) multiplied.getEl(0, 0);
-			 int y =(int) multiplied.getEl(1, 0);
-			 int z =(int) multiplied.getEl(2, 0);
-			 int t =(int) multiplied.getEl(3, 0);
+			 Matrix multiplied = Matrix.matrixMultiplication(line, scaleMatrix);
+			 int x =(int) Math.round(multiplied.getEl(0, 0));
+			 int y =(int) Math.round(multiplied.getEl(0, 1));
+			 int z =(int) Math.round(multiplied.getEl(0, 2));
+			 int t =(int) Math.round(multiplied.getEl(0, 3));
 			 
 			 result.add(new Excel(x,y,z,t, ex.getColor()));
 		 }

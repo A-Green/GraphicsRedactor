@@ -52,14 +52,16 @@ public class AntiAliasingLine extends AbstractLine{
 	@Override
 	protected void setColoredExes() {		
 		coloredEx = LineGenerator.WuAlgorithm(begin, end);
+		center = coloredEx.get(coloredEx.size() /2);
 		
 	}
 	
 	@Override
 	public void rotate(int angle)
 	{
-		super.rotate(angle);
+		super.rotate(angle,center);
 		setColoredExes();
 	}
+
 
 }

@@ -64,8 +64,7 @@ public class Circle extends AbstractLine {
 	@Override
 	public void rotate(int angle)
 	{
-		begin = PlanarTransform.rotate(angle, begin);
-		setColoredExes();
+
 	}
 
 }
