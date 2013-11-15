@@ -47,6 +47,7 @@ public class GridView extends JPanel{
 	    steplyArray = new ArrayList<Excel>();
 	    ClickedController = new ClickedExController();
 	    figures = new ArrayList<Shape>();
+	    selectedFigure = null;
 	}
 		
 	  protected void paintComponent(Graphics g) {
@@ -127,7 +128,15 @@ public class GridView extends JPanel{
 		        	 }
 		         }
 	         }
-
+	         
+	         if (selectedFigure != null)
+	         for (Excel ex: selectedFigure.getColoredExes())
+	         {
+	         int x[] = {ex.getX() * step + step,ex.getX() * step ,ex.getX() * step,ex.getX()* step + step};
+    		 int y[] = {ex.getY()* step,ex.getY()* step,ex.getY()* step + step,ex.getY()* step + step};
+    		 g2d.setColor(Color.GREEN.darker());
+    		 g2d.fillPolygon(x,y,4);
+	         }
 	
 	    }
 
@@ -185,6 +194,12 @@ public class GridView extends JPanel{
 				  return true;
 		  }
 		  
+		  if (selectedFigure != null)
+			  for(Excel e: selectedFigure.getColoredExes())
+			  {
+				  if (e.getX() == ex.getX() && e.getY() == ex.getY())
+					  return true;
+			  }
 		  return false;
 	  }
 	  //удал€ет €чейку из массива закрашенных €чеек, а также из контроллера кликнутых
@@ -217,6 +232,7 @@ public class GridView extends JPanel{
 		  steplyArray.clear();
 		  ClickedController.clear();
 		  figures.clear();
+		  selectedFigure = null;
 	  } 
 	  
 	  public Excel getClickedEx()
@@ -246,10 +262,10 @@ public class GridView extends JPanel{
 	  
 	  public void rotate(int angle)
 	  {
-		  for(Shape figure: figures)
-		  {
-			  figure.rotate(angle);
-		  }
+		
+		  if(selectedFigure != null)
+			  selectedFigure.rotate(angle);
+		  
 	  }
 	  
 	  public void addFugure(Shape figure)
@@ -279,34 +295,72 @@ public class GridView extends JPanel{
 	  public void rotateX(int angle){
 		  //”””””””””∆∆∆јјј——————Ќќ!!!переделать!!! 
 		  int a;
-		  for (Shape figure: figures)
+		/*  for (Shape figure: figures)
 		  {
 			 if(figure.getClass().toString().contains("dimensional")){
 				 ((DimensionalObject) figure).rotateX(angle);
 			 }
 		  }
+		  */
+		  if (selectedFigure != null)
+		  if(selectedFigure.getClass().toString().contains("dimensional")){
+				 ((DimensionalObject) selectedFigure).rotateX(angle);
+			 }
+		  
 	  }
 	  
 	  public void rotateY(int angle){
 		  //”””””””””∆∆∆јјј——————Ќќ!!!переделать!!! 
 		  int a;
-		  for (Shape figure: figures)
+		  /*for (Shape figure: figures)
 		  {
 			 if(figure.getClass().toString().contains("dimensional")){
 				 ((DimensionalObject) figure).rotateY(angle);
 			 }
-		  }
+		  }*/
+		  if (selectedFigure != null)
+		  if(selectedFigure.getClass().toString().contains("dimensional")){
+				 ((DimensionalObject) selectedFigure).rotateY(angle);
+			 }
 	  }
 	  
 	  public void rotateZ(int angle){
 		  //”””””””””∆∆∆јјј——————Ќќ!!!переделать!!! 
 		  int a;
-		  for (Shape figure: figures)
+		 /* for (Shape figure: figures)
 		  {
 			 if(figure.getClass().toString().contains("dimensional")){
 				 ((DimensionalObject) figure).rotateZ(angle);
 			 }
+		  }*/
+		  if (selectedFigure != null)
+		  if(selectedFigure.getClass().toString().contains("dimensional")){
+				 ((DimensionalObject) selectedFigure).rotateZ(angle);
+			 }
+	  }
+	  
+	  public boolean select(Excel ex)
+	  {
+		  for (Shape figure: figures)
+		  {
+			  ArrayList<Excel> temp = figure.getColoredExes();
+			  
+			  for (Excel colEx: temp)
+			  {
+				  if (colEx.equals(ex))
+				  {
+					  System.out.println(figure.getClass().toString());
+					  if (selectedFigure != null)
+						  figures.add(selectedFigure);
+					  
+					  selectedFigure = figure;				  
+					  figures.remove(figure);
+					  return true;
+				  }
+			  }
 		  }
+		  
+		  return false;
 	  }
 	  
 

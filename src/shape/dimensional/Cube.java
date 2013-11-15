@@ -119,6 +119,12 @@ public class Cube extends DimensionalObject {
 		setColoredExes();
 		
 	}
+	
+	public void scale(int times)
+	{
+		base = DimensionalTrasform.scale(side, base);
+		setColoredExes();
+	}
 
 	
 }

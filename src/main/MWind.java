@@ -63,6 +63,7 @@ public class MWind extends JFrame {
 	private JTextField rotateYAngle;
 	private JTextField rotateZAngle;
 	private JTextField rotateAllAngle;
+	private JTextField scaleField;
 
 
 	/**
@@ -517,6 +518,31 @@ public class MWind extends JFrame {
 			
 			}
 		});
+		
+		JButton scaleBtn = new JButton("Scale");
+		scaleBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*if (gridView.getSelectedFigure() != null)
+					gridView.getSelectedFigure().scale(Integer.parseInt(scaleField.getText()));
+				
+				gridView.repaint();
+				*/
+			}
+		});
+		GridBagConstraints gbc_scaleBtn = new GridBagConstraints();
+		gbc_scaleBtn.insets = new Insets(0, 0, 5, 0);
+		gbc_scaleBtn.gridx = 0;
+		gbc_scaleBtn.gridy = 4;
+		toolsPanel.add(scaleBtn, gbc_scaleBtn);
+		
+		scaleField = new JTextField();
+		GridBagConstraints gbc_scaleField = new GridBagConstraints();
+		gbc_scaleField.insets = new Insets(0, 0, 5, 0);
+		gbc_scaleField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_scaleField.gridx = 0;
+		gbc_scaleField.gridy = 5;
+		toolsPanel.add(scaleField, gbc_scaleField);
+		scaleField.setColumns(10);
 		GridBagConstraints gbc_rotateXBtn = new GridBagConstraints();
 		gbc_rotateXBtn.insets = new Insets(0, 0, 5, 0);
 		gbc_rotateXBtn.gridx = 0;
@@ -524,6 +550,7 @@ public class MWind extends JFrame {
 		toolsPanel.add(rotateXBtn, gbc_rotateXBtn);
 
 		rotateXAngle = new JTextField();
+		rotateXAngle.setText("1");
 		GridBagConstraints gbc_rotateXAngle = new GridBagConstraints();
 		gbc_rotateXAngle.insets = new Insets(0, 0, 5, 0);
 		gbc_rotateXAngle.fill = GridBagConstraints.HORIZONTAL;
@@ -551,6 +578,7 @@ public class MWind extends JFrame {
 		toolsPanel.add(rotateYBtn, gbc_rotateYBtn);
 		
 		rotateYAngle = new JTextField();
+		rotateYAngle.setText("1");
 		GridBagConstraints gbc_rotateYAngle = new GridBagConstraints();
 		gbc_rotateYAngle.insets = new Insets(0, 0, 5, 0);
 		gbc_rotateYAngle.fill = GridBagConstraints.HORIZONTAL;
@@ -578,6 +606,7 @@ public class MWind extends JFrame {
 		toolsPanel.add(rotateZBtn, gbc_rotateZBtn);
 		
 		rotateZAngle = new JTextField();
+		rotateZAngle.setText("1");
 		GridBagConstraints gbc_rotateZAngle = new GridBagConstraints();
 		gbc_rotateZAngle.insets = new Insets(0, 0, 5, 0);
 		gbc_rotateZAngle.fill = GridBagConstraints.HORIZONTAL;
@@ -593,6 +622,7 @@ public class MWind extends JFrame {
 				 Pattern p = Pattern.compile("^-?[a-z0-9_-]+$"); 
 			     Matcher m = p.matcher(rotateAllAngle.getText()); 
 			     if (m.matches()){
+
 			    	 gridView.rotate(Integer.parseInt(rotateAllAngle.getText()));
 			    	 gridView.repaint();
 			     }
@@ -605,6 +635,7 @@ public class MWind extends JFrame {
 		toolsPanel.add(rotateBnt, gbc_rotateBnt);
 		
 		rotateAllAngle = new JTextField();
+		rotateAllAngle.setText("1");
 		GridBagConstraints gbc_rotateAllAngle = new GridBagConstraints();
 		gbc_rotateAllAngle.fill = GridBagConstraints.HORIZONTAL;
 		gbc_rotateAllAngle.gridx = 0;
@@ -634,12 +665,9 @@ public class MWind extends JFrame {
 					int y = event.getY() / gridView.getStep();
 					Excel ex = new Excel (x, y, Color.black);
 					
-					if (gridView.contains(ex)) 
-						gridView.removeEx(ex);	
-					 else 
-						gridView.addEx(ex);
+					
 						
-					gridView.repaint();
+					
 					
 				}			
 				
@@ -648,6 +676,16 @@ public class MWind extends JFrame {
 			 public void mousePressed(MouseEvent e) {
 				 	clickedX = e.getX() / gridView.getStep();
 				 	clickedY = e.getY() / gridView.getStep();
+				 	Excel ex = new Excel (clickedX, clickedY, Color.black);
+					
+				 	if (!gridView.select(ex))
+				 	{
+				 		if (gridView.contains(ex)) 
+							gridView.removeEx(ex);	
+						 else 
+							gridView.addEx(ex);
+				 	}
+				 	gridView.repaint();
 			    }
 
 		});
@@ -661,7 +699,12 @@ public class MWind extends JFrame {
 				
 					if (clickedX != x || clickedY != y)
 					{
-					gridView.moveLine(clickedX, clickedY, x, y);
+						Excel begin = new Excel(clickedX, clickedY);
+						Excel end = new Excel(x, y);
+						
+						if (gridView.getSelectedFigure() != null)
+						gridView.getSelectedFigure().move(begin, end);
+
 					clickedX = x; 
 					clickedY = y;
 					}
@@ -679,6 +722,8 @@ public class MWind extends JFrame {
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+				
+				
 				if (e.isPopupTrigger()) {
 					showMenu(e);
 				}

@@ -17,4 +17,6 @@ public abstract class Shape {
 	public abstract void rotate(int anlge);
 
 	protected abstract void dragg(Excel start, Excel end);
+	
+	//public abstract void scale(int times);
 }
